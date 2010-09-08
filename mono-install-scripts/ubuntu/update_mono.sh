@@ -26,10 +26,10 @@ sudo make uninstall
 cd $BUILDDIR
 rm -rf mono-*
 
-wget http://mono.ximian.com/daily/mono-20100801.tar.bz2
+wget http://mono.ximian.com/daily/mono-20100901.tar.bz2
 
-bunzip2 -df mono-20100801.tar.bz2
-tar -xvf mono-20100801.tar
+bunzip2 -df mono-20100901.tar.bz2
+tar -xvf mono-20100901.tar
 
 cd $BUILDDIR
 cd mono-*

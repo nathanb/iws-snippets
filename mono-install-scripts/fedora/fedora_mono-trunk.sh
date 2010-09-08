@@ -23,18 +23,18 @@ cd $BUILDDIR
 svn co svn://anonsvn.mono-project.com/source/trunk/xsp
 svn co svn://anonsvn.mono-project.com/source/trunk/mod_mono
 
-wget http://mono.ximian.com/daily/mono-20100801.tar.bz2
+wget http://mono.ximian.com/daily/mono-20100901.tar.bz2
 
 cd $BUILDDIR
-bunzip2 -df mono-20100801.tar.bz2
-tar -xvf mono-20100801.tar
+bunzip2 -df mono-20100901.tar.bz2
+tar -xvf mono-20100901.tar
 
 echo
 echo "building and installing mono packages"
 echo
 cd $BUILDDIR
 cd mono-*
-./configure --prefix=/usr/local --with-glib=system
+./configure --prefix=/usr/local
 make
 make install
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using SubSonic.SqlGeneration.Schema;
 
-namespace SubSonicDemo
+namespace SubSonicDemo.Core
 {
 	//you may optionally specify a custom table name for your domain object. 
 	//If you left this out, it would likely pluralize and pascal case the class name for its table representation

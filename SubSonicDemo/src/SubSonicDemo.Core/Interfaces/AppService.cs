@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SubSonicDemo
+namespace SubSonicDemo.Core
 {
 	public interface AppService
 	{

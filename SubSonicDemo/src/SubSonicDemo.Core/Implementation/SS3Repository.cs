@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using SubSonic.Repository;
 
-namespace SubSonicDemo
+namespace SubSonicDemo.Core
 {
 	public class SS3LinqRepository : LinqRepository
 	{

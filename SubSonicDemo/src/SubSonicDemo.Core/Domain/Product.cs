@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using SubSonic.SqlGeneration.Schema;
 
-namespace SubSonicDemo
+namespace SubSonicDemo.Core
 {
 	//not using table name override. 
 	public class Product

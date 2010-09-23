@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using System.Configuration;
+using SubSonicDemo.Core;
 
 namespace SubSonicDemo
 {

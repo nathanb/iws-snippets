@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 
-namespace SubSonicDemo
+namespace SubSonicDemo.Core
 {
 	public class Config
 	{

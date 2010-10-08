@@ -69,13 +69,13 @@ sudo make install
 
 cd $BUILDDIR
 cd xsp-2.8
-./autogen.sh --prefix=/usr/local
+./configure --prefix=/usr/local
 make
 sudo make install
 
 cd $BUILDDIR
-cd mod_mono
-./autogen.sh --prefix=/usr/local
+cd mod_mono-2.8
+./configure --prefix=/usr/local
 make
 sudo make install
 cd $BUILDDIR

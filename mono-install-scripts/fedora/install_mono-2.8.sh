@@ -10,7 +10,7 @@ echo "updating existing system"
 yum update -y
 
 echo "installing prerequisites"
-yum install -y make automake glibc-devel gcc-c++ gcc glib2-devel pkgconfig subversion bison gettext lib autoconf httpd httpd-devel libtool wget libtiff-devel gtk2-devel atk-devel pango-devel giflib-devel
+yum install -y make automake glibc-devel gcc-c++ gcc glib2-devel pkgconfig subversion bison gettext lib autoconf httpd httpd-devel libtool wget libtiff-devel gtk2-devel atk-devel pango-devel giflib-devel libglade2-devel
 
 mkdir -p $BUILDDIR
 

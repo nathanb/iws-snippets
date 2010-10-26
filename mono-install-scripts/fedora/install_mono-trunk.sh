@@ -4,7 +4,7 @@ TOPDIR=$(pwd)
 BUILDDIR=$TOPDIR/build
 DLDDIR=$TOPDIR/downloads
 
-export PATH=/usr/local/bin:$PATH
+export PATH=/opt/mono-daily/bin:$PATH
 
 echo "updating existing system"
 yum update -y
@@ -34,19 +34,19 @@ echo "building and installing mono packages"
 echo
 cd $BUILDDIR
 cd mono-*
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-daily
 make
 make install
 
 cd $BUILDDIR
 cd xsp
-./autogen.sh --prefix=/usr/local
+./autogen.sh --prefix=/opt/mono-daily
 make
 make install
 
 cd $BUILDDIR
 cd mod_mono
-./autogen.sh --prefix=/usr/local
+./autogen.sh --prefix=/opt/mono-daily
 make
 make install
 cd $BUILDDIR

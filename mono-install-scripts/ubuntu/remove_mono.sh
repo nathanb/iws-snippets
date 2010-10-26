@@ -4,19 +4,25 @@ TOPDIR=$(pwd)
 BUILDDIR=$TOPDIR/build
 DLDDIR=$TOPDIR/downloads
 
-export PATH=/usr/local/bin:$PATH
-
 cd $BUILDDIR
 
 echo "building and installing mono packages"
 echo
-cd $BUILDDIR
 
-cd mod_mono
+cd $BUILDDIR
+cd libgdiplus-*
 sudo make uninstall
 
 cd $BUILDDIR
-cd xsp
+cd gtk-sharp-*
+sudo make uninstall
+
+cd $BUILDDIR
+cd mod_mono-*
+sudo make uninstall
+
+cd $BUILDDIR
+cd xsp-*
 sudo make uninstall
 
 cd $BUILDDIR

@@ -4,7 +4,7 @@ TOPDIR=$(pwd)
 BUILDDIR=$TOPDIR/build
 DLDDIR=$TOPDIR/downloads
 
-export PATH=/usr/local/bin:$PATH
+export PATH=/opt/mono-daily/bin:$PATH
 
 cd $BUILDDIR
 
@@ -26,28 +26,26 @@ sudo make uninstall
 cd $BUILDDIR
 rm -rf mono-*
 
-wget http://mono.ximian.com/daily/mono-20100901.tar.bz2
+wget http://mono.ximian.com/daily/mono-latest.tar.bz2
 
-bunzip2 -df mono-20100901.tar.bz2
-tar -xvf mono-20100901.tar
+bunzip2 -df mono-latest.tar.bz2
+tar -xvf mono-latest.tar
 
 cd $BUILDDIR
 cd mono-*
-./configure --prefix=/usr/local --with-glib=system
+./configure --prefix=/opt/mono-daily
 make
 sudo make install
 
 cd $BUILDDIR
-cd xsp
-svn update
-./autogen.sh --prefix=/usr/local
+cd xsp-*
+./configure.sh --prefix=/opt/mono-daily
 make
 sudo make install
 
 cd $BUILDDIR
-cd mod_mono
-svn update
-./autogen.sh --prefix=/usr/local
+cd mod_mono-*
+./configure.sh --prefix=/opt/mono-daily
 make
 sudo make install
 cd $BUILDDIR

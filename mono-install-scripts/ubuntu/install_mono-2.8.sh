@@ -4,7 +4,7 @@ TOPDIR=$(pwd)
 BUILDDIR=$TOPDIR/build
 DLDDIR=$TOPDIR/downloads
 
-export PATH=/usr/local/bin:$PATH
+export PATH=/opt/mono-2.8/bin:$PATH
 
 
 echo "updating existing system"
@@ -51,31 +51,31 @@ echo
 
 cd $BUILDDIR
 cd libgdiplus-2.8
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 sudo make install
 
 cd $BUILDDIR
 cd mono-2.8
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 sudo make install
 
 cd $BUILDDIR
 cd gtk-sharp-2.12.10
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 sudo make install
 
 cd $BUILDDIR
 cd xsp-2.8
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 sudo make install
 
 cd $BUILDDIR
 cd mod_mono-2.8
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 sudo make install
 cd $BUILDDIR

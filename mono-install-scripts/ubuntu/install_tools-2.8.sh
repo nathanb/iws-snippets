@@ -3,7 +3,7 @@
 TOPDIR=$(pwd)
 BUILDDIR=$TOPDIR/build-tools
 
-export PATH=/usr/local/bin:$PATH
+export PATH=/opt/mono-2.8/bin:$PATH
 
 
 echo "updating existing system"
@@ -59,62 +59,62 @@ echo
 
 cd $BUILDDIR
 cd mono-addins-0.5
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 make install
 
 cd $BUILDDIR
 cd gecko-sharp-2.0-0.13
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 make install
 
 cd $BUILDDIR
 cd webkit-sharp-0.3
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 make install
 
 cd $BUILDDIR
 cd gluezilla-2.6
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 make install
 
 
 cd $BUILDDIR
 cd gnome-sharp-2.24.1
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 make install
 
 cd $BUILDDIR
 cd mono-tools-2.8
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 make install
 
 cd $BUILDDIR
 cd monodevelop-2.4
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 make install
 
 cd $BUILDDIR
 cd monodevelop-database-2.4
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 make install
 
 cd $BUILDDIR
 cd monodevelop-debugger-gdb
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 make install
 
 cd $BUILDDIR
 cd monodevelop-debugger-mdb
-./configure --prefix=/usr/local
+./configure --prefix=/opt/mono-2.8
 make
 make install
 

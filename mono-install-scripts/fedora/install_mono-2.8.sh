@@ -5,6 +5,8 @@ BUILDDIR=$TOPDIR/build
 DLDDIR=$TOPDIR/downloads
 
 export PATH=/opt/mono-2.8/bin:$PATH
+echo "#!/bin/bash
+export PATH=$PATH" >> /etc/profile.d/mono-path.sh
 
 echo "updating existing system"
 yum update -y

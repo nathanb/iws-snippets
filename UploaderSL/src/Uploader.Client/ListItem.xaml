@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="Uploader.Client.ListItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="390" Height="60">
+	<Grid x:Name="LayoutRoot" Background="White">
+		<Border BorderBrush="Black" BorderThickness="0,0,0,0" Margin="5,5,5,24">
+			<TextBlock x:Name="uxText"></TextBlock>
+		</Border>
+		<ProgressBar Margin="5,5,5,5" Height="15" VerticalAlignment="Bottom" x:Name="uxProgress"/>
+	</Grid>
+</UserControl>

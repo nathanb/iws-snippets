@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="5d30f464-388b-48a7-9a6a-192e86e3c53f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:4796/Services/FileReceiver.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="FileReceiver.disco" MetadataType="Disco" ID="48e4b762-4e48-46db-bf37-653c6c53ecdb" SourceId="1" SourceUrl="http://localhost:4796/Services/FileReceiver.svc?disco" />
+    <MetadataFile FileName="FileReceiver1.xsd" MetadataType="Schema" ID="fff2d55b-f5be-4dcc-b3e8-964dc81aac09" SourceId="1" SourceUrl="http://localhost:4796/Services/FileReceiver.svc?xsd=xsd1" />
+    <MetadataFile FileName="FileReceiver.wsdl" MetadataType="Wsdl" ID="b42eb1e4-762d-4bf0-a5e7-005676a8d414" SourceId="1" SourceUrl="http://localhost:4796/Services/FileReceiver.svc?wsdl" />
+    <MetadataFile FileName="FileReceiver11.xsd" MetadataType="Schema" ID="820dc60c-a86b-48fb-adc9-4403cec11c66" SourceId="1" SourceUrl="http://localhost:4796/Services/FileReceiver.svc?xsd=xsd2" />
+    <MetadataFile FileName="FileReceiver.xsd" MetadataType="Schema" ID="10b23b1b-896d-485c-a0ff-0d9526acd323" SourceId="1" SourceUrl="http://localhost:4796/Services/FileReceiver.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

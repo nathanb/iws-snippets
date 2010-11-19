@@ -5,14 +5,14 @@ BUILDDIR=$TOPDIR/build
 DLDDIR=$TOPDIR/downloads
 
 export PATH=/opt/mono-2.8/bin:$PATH
-
+echo "#!/bin/bash
+export PATH=$PATH" >> /etc/profile.d/mono-path.sh
 
 echo "updating existing system"
-sudo apt-get update
-sudo apt-get upgrade -y
+yum update -y
 
 echo "installing prerequisites"
-sudo apt-get install -y build-essential libc6-dev g++ gcc libglib2.0-dev pkg-config subversion apache2 apache2-threaded-dev bison gettext autoconf automake libtool libpango1.0-dev libatk1.0-dev libgtk2.0-dev libtiff4-dev libgif-dev libglade2-dev
+yum install -y make automake glibc-devel gcc-c++ gcc glib2-devel pkgconfig subversion bison gettext lib autoconf httpd httpd-devel libtool wget libtiff-devel gtk2-devel atk-devel pango-devel giflib-devel libglade2-devel
 
 mkdir -p $BUILDDIR
 

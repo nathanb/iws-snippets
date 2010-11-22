@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="C:\Code\Git\iws-snippets\sample-asp4-mvc2\build" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Default" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="bin/SampleASP4MVC2.Web.dll" publishTime="11/22/2010 07:44:03" />
+    <file relUrl="Views/Home/Index.aspx" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="bin/SampleASP4MVC2.Web.pdb" publishTime="11/22/2010 07:44:03" />
+    <file relUrl="Scripts/MicrosoftAjax.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Global.asax" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Scripts/jquery.validate-vsdoc.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Web.config" publishTime="11/22/2010 07:44:44" />
+    <file relUrl="Scripts/jquery-1.4.1.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Views/Shared/LogOnUserControl.ascx" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Scripts/MicrosoftMvcAjax.debug.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Scripts/MicrosoftMvcValidation.debug.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Scripts/jquery-1.4.1.min.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Scripts/jquery.validate.min.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Scripts/jquery.validate.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="bin/System.Web.Mvc.xml" publishTime="02/17/2010 07:22:24" />
+    <file relUrl="Views/Home/About.aspx" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Views/Account/LogOn.aspx" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Views/Account/Register.aspx" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="bin/System.Web.Mvc.dll" publishTime="02/17/2010 07:24:14" />
+    <file relUrl="Views/Account/ChangePassword.aspx" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Views/Account/ChangePasswordSuccess.aspx" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="bin/System.Web.Routing.dll" publishTime="03/18/2010 19:31:26" />
+    <file relUrl="Views/Shared/Site.Master" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Views/Shared/Error.aspx" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Scripts/MicrosoftMvcAjax.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Content/Site.css" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Scripts/MicrosoftAjax.debug.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Scripts/MicrosoftMvcValidation.js" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Views/Web.config" publishTime="11/17/2010 09:57:00" />
+    <file relUrl="Scripts/jquery-1.4.1-vsdoc.js" publishTime="11/17/2010 09:57:00" />
+  </publishProfile>
+</publishData>

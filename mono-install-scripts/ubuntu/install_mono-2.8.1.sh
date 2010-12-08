@@ -88,4 +88,4 @@ sudo rm /usr/lib/pkgconfig/mono-nunit.pc
 
 echo
 echo "done"
-echo "Please reboot after updating your environment path at /etc/environment  to include /opt/mono-2.8.1/bin
+echo "Please reboot after updating your environment path at /etc/environment  to include /opt/mono-2.8.1/bin"

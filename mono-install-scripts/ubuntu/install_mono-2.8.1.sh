@@ -12,9 +12,10 @@ sudo apt-get update
 sudo apt-get upgrade -y
 
 echo "installing prerequisites"
-sudo apt-get install -y build-essential libc6-dev g++ gcc libglib2.0-dev pkg-config subversion apache2 apache2-threaded-dev bison gettext autoconf automake libtool libpango1.0-dev libatk1.0-dev libgtk2.0-dev libtiff4-dev libgif-dev libglade2-dev libnunit-cil-dev
+sudo apt-get install -y build-essential libc6-dev g++ gcc libglib2.0-dev pkg-config subversion apache2 apache2-threaded-dev bison gettext autoconf automake libtool libpango1.0-dev libatk1.0-dev libgtk2.0-dev libtiff4-dev libgif-dev libglade2-dev
 
-sudo ln -s /usr/lib/pkgconfig/nunit.pc /usr/lib/pkgconfig/mono-nunit.pc
+# temp hack. removed later.
+sudo ln -s /opt/mono-2.8.1/lib/pkgconfig/mono-nunit.pc /usr/lib/pkgconfig/mono-nunit.pc
 
 mkdir -p $BUILDDIR
 
@@ -82,5 +83,9 @@ make
 sudo make install
 cd $BUILDDIR
 
+#clean up
+sudo rm /usr/lib/pkgconfig/mono-nunit.pc
+
 echo
 echo "done"
+echo "Please reboot after updating your environment path at /etc/environment  to include /opt/mono-2.8.1/bin

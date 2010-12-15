@@ -53,7 +53,7 @@ echo
 
 
 cd $BUILDDIR
-cd libgdiplus-2.8
+cd libgdiplus-2.8.1
 ./configure --prefix=/opt/mono-2.8.1
 make
 sudo make install

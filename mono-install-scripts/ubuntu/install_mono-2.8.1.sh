@@ -88,4 +88,4 @@ sudo rm /usr/lib/pkgconfig/mono-nunit.pc
 
 echo
 echo "done"
-echo "Please reboot after updating your environment path at /etc/environment  to include /opt/mono-2.8.1/bin"
+echo "If you want to use this version as the default on your platform (may not work for everything with this bare install), set your PATH to include /opt/mono-2.8.1/bin. Otherwise for Asp.NET, you can just update your virtual host config to use mod-mono-server2 from the install path directly."

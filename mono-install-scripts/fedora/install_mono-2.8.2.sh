@@ -27,7 +27,7 @@ cd $BUILDDIR
 wget http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.8.2.tar.bz2
 wget http://ftp.novell.com/pub/mono/sources/mod_mono/mod_mono-2.8.tar.bz2
 wget http://ftp.novell.com/pub/mono/sources/mono/mono-2.8.2.tar.bz2
-wget http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.8.2.tar.bz2
+wget http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.8.1.tar.bz2
 wget http://ftp.novell.com/pub/mono/sources/gtk-sharp212/gtk-sharp-2.12.10.tar.bz2
 
 cd $BUILDDIR
@@ -40,8 +40,8 @@ tar -xvf mod_mono-2.8.tar
 bunzip2 -df mono-2.8.2.tar.bz2
 tar -xvf mono-2.8.2.tar
 
-bunzip2 -df libgdiplus-2.8.2.tar.bz2
-tar -xvf libgdiplus-2.8.2.tar
+bunzip2 -df libgdiplus-2.8.1.tar.bz2
+tar -xvf libgdiplus-2.8.1.tar
 
 bunzip2 -df gtk-sharp-2.12.10.tar.bz2
 tar -xvf gtk-sharp-2.12.10.tar
@@ -52,7 +52,7 @@ echo
 
 
 cd $BUILDDIR
-cd libgdiplus-2.8.2
+cd libgdiplus-2.8.1
 ./configure --prefix=/opt/mono-2.8.2
 make
 sudo make install

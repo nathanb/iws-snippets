@@ -31,6 +31,9 @@ $(document).ready(function() {
 	$('#<%=this.Button1.ClientID %>').click(function(){
 		$('#dialogContent').dialog('open'); return false;
 	});
+	$('#<%=this.Button2.ClientID %>').click(function(){
+		$('#dialogContent').dialog('open'); return false;
+	});
 	
 	$("#dialogContent").dialog(
 		{ autoOpen: false,
@@ -56,6 +59,7 @@ $(document).ready(function() {
 	<asp:Literal ID="uxTest" runat="server" />
 	<asp:Label ID="lblClicked" runat="server" />
 	<asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Test"/>
+	<asp:LinkButton ID="Button2" runat="server" OnClick="Button1_Click" Text="Test2" />
 	<div id="dialogContent" style="display: none;">
 		<h2>Terms and Conditions</h2>
 		<p>

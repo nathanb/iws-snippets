@@ -5,6 +5,8 @@ BUILDDIR=$TOPDIR/build
 DLDDIR=$TOPDIR/downloads
 
 export PATH=/opt/mono-2.8.2/bin:$PATH
+export PKG_CONFIG_PATH=/opt/mono-2.8.2/lib/pkgconfig:$PKG_CONFIG_PATH
+
 echo "#!/bin/bash
 # I'm not going to force this into the default environment. With these scripts, it's probably best to use the native install of Mono for default and manually 
 #	instruct your Asp.Net Mono applications to use this version of mono. It can be done inside the virtualHost configuration for the site. 

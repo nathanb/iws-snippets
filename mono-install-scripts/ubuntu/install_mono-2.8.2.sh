@@ -5,6 +5,7 @@ BUILDDIR=$TOPDIR/build
 DLDDIR=$TOPDIR/downloads
 
 export PATH=/opt/mono-2.8.2/bin:$PATH
+export PKG_CONFIG_PATH=/opt/mono-2.8.2/lib/pkgconfig:$PKG_CONFIG_PATH
 
 
 echo "updating existing system"

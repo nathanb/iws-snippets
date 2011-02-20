@@ -2,18 +2,15 @@
 
 TOPDIR=$(pwd)
 BUILDDIR=$TOPDIR/build
-DLDDIR=$TOPDIR/downloads
 
 export PATH=/opt/mono-2.10/bin:$PATH
 export PKG_CONFIG_PATH=/opt/mono-2.10/lib/pkgconfig:$PKG_CONFIG_PATH
 
-
 echo "updating existing system"
-sudo apt-get update
-sudo apt-get upgrade -y
+yum update -y
 
 echo "installing prerequisites"
-sudo apt-get install -y build-essential libc6-dev g++ gcc libglib2.0-dev pkg-config git-core apache2 apache2-threaded-dev bison gettext autoconf automake libtool libpango1.0-dev libatk1.0-dev libgtk2.0-dev libtiff4-dev libgif-dev libglade2-dev
+yum install -y make automake glibc-devel gcc-c++ gcc glib2-devel pkgconfig subversion bison gettext lib autoconf httpd httpd-devel libtool wget libtiff-devel gtk2-devel atk-devel pango-devel giflib-devel libglade2-devel
 
 mkdir -p $BUILDDIR
 
@@ -49,7 +46,6 @@ echo
 echo "building and installing mono packages"
 echo
 
-
 cd $BUILDDIR
 cd libgdiplus-2.10
 ./configure --prefix=/opt/mono-2.10
@@ -84,5 +80,3 @@ cd $BUILDDIR
 
 echo
 echo "done"
-echo "If you want to use this version as the default on your platform (may not work for everything with this bare install), set your PATH to include /opt/mono-2.10/bin. Otherwise for Asp.NET, you can just update your virtual host config to use mod-mono-server2 from the install path directly."
-

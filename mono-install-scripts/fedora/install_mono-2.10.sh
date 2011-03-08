@@ -10,7 +10,7 @@ echo "updating existing system"
 yum update -y
 
 echo "installing prerequisites"
-yum install -y make automake glibc-devel gcc-c++ gcc glib2-devel pkgconfig subversion bison gettext lib autoconf httpd httpd-devel libtool wget libtiff-devel gtk2-devel atk-devel pango-devel giflib-devel libglade2-devel
+yum install -y make automake glibc-devel gcc-c++ gcc glib2-devel pkgconfig subversion bison gettext-libs autoconf httpd httpd-devel libtool wget libtiff-devel libexif-devel libexif libjpeg-devel gtk2-devel atk-devel pango-devel giflib-devel libglade2-devel
 
 mkdir -p $BUILDDIR
 
@@ -22,7 +22,7 @@ cd $BUILDDIR
 
 wget http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.10.tar.bz2
 wget http://ftp.novell.com/pub/mono/sources/mod_mono/mod_mono-2.10.tar.bz2
-wget http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.tar.bz2
+wget http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.1.tar.bz2
 wget http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.10.tar.bz2
 wget http://ftp.novell.com/pub/mono/sources/gtk-sharp212/gtk-sharp-2.12.10.tar.bz2
 
@@ -33,8 +33,8 @@ tar -xvf xsp-2.10.tar
 bunzip2 -df mod_mono-2.10.tar.bz2
 tar -xvf mod_mono-2.10.tar
 
-bunzip2 -df mono-2.10.tar.bz2
-tar -xvf mono-2.10.tar
+bunzip2 -df mono-2.10.1.tar.bz2
+tar -xvf mono-2.10.1.tar
 
 bunzip2 -df libgdiplus-2.10.tar.bz2
 tar -xvf libgdiplus-2.10.tar
@@ -53,7 +53,7 @@ make
 sudo make install
 
 cd $BUILDDIR
-cd mono-2.10
+cd mono-2.10.1
 ./configure --prefix=/opt/mono-2.10
 make
 sudo make install

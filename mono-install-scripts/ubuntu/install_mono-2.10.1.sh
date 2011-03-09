@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/bin/bash -e
 
 TOPDIR=$(pwd)
 BUILDDIR=$TOPDIR/build
-DLDDIR=$TOPDIR/downloads
+PREFIX=/opt/mono-2.10.1
 
-export PATH=/opt/mono-2.10.1/bin:$PATH
-export PKG_CONFIG_PATH=/opt/mono-2.10.1/lib/pkgconfig:$PKG_CONFIG_PATH
+export PATH=$PREFIX/bin:$PATH
+export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
 
 
 echo "updating existing system"
@@ -23,66 +24,46 @@ echo
 
 cd $BUILDDIR
 
-wget http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.10.tar.bz2
-wget http://ftp.novell.com/pub/mono/sources/mod_mono/mod_mono-2.10.tar.bz2
-wget http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.1.tar.bz2
-wget http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.10.tar.bz2
-wget http://ftp.novell.com/pub/mono/sources/gtk-sharp212/gtk-sharp-2.12.10.tar.bz2
+declare -A PACKAGEFILES
+PACKAGEFILES=(["libgdiplus-2.10"]="http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.10.tar.bz2"
+["mono-2.10.1"]="http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.1.tar.bz2"
+["gtk-sharp-2.12.10"]="http://ftp.novell.com/pub/mono/sources/gtk-sharp212/gtk-sharp-2.12.10.tar.bz2"
+["xsp-2.10"]="http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.10.tar.bz2"
+["mod_mono-2.10"]="http://ftp.novell.com/pub/mono/sources/mod_mono/mod_mono-2.10.tar.bz2")
 
-cd $BUILDDIR
-bunzip2 -df xsp-2.10.tar.bz2
-tar -xvf xsp-2.10.tar
+echo Downloading
+for i in "${!PACKAGEFILES[@]}"
+do
+	#only download it if you don't already have it. 
+	if [ ! -f "$i.tar" ]
+	then
+		wget ${PACKAGEFILES[$i]}
+	fi
+	if [ -f "$i.tar.bz2" ]
+	then
+		bunzip2 -df "$i.tar.bz2"
+	fi
+	if [ -f "$i.tar" ]
+	then
+		tar -xvf "$i.tar"
+	fi
+done
 
-bunzip2 -df mod_mono-2.10.tar.bz2
-tar -xvf mod_mono-2.10.tar
-
-bunzip2 -df mono-2.10.1.tar.bz2
-tar -xvf mono-2.10.1.tar
-
-bunzip2 -df libgdiplus-2.10.tar.bz2
-tar -xvf libgdiplus-2.10.tar
-
-bunzip2 -df gtk-sharp-2.12.10.tar.bz2
-tar -xvf gtk-sharp-2.12.10.tar
 
 echo
 echo "building and installing mono packages"
 echo
 
+for i in "${!PACKAGEFILES[@]}"
+do
+	cd $BUILDDIR/$i
+	./configure --prefix=$PREFIX
+	make
+	sudo make install
+done
 
 cd $BUILDDIR
-cd libgdiplus-2.10
-./configure --prefix=/opt/mono-2.10.1
-make
-sudo make install
-
-cd $BUILDDIR
-cd mono-2.10.1
-./configure --prefix=/opt/mono-2.10.1
-make
-sudo make install
-
-cd $BUILDDIR
-cd gtk-sharp-2.12.10
-./configure --prefix=/opt/mono-2.10.1
-make
-sudo make install
-
-cd $BUILDDIR
-cd xsp-2.10
-./configure --prefix=/opt/mono-2.10.1
-make
-sudo make install
-
-cd $BUILDDIR
-cd mod_mono-2.10
-./configure --prefix=/opt/mono-2.10.1
-make
-sudo make install
-
-cd $BUILDDIR
-
 echo
 echo "done"
-echo "If you want to use this version as the default on your platform (may not work for everything with this bare install), set your PATH to include /opt/mono-2.10/bin. Otherwise for Asp.NET, you can just update your virtual host config to use mod-mono-server2 from the install path directly."
+
 

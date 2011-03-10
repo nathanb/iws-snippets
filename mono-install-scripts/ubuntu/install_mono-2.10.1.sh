@@ -61,7 +61,7 @@ done
 
 
 echo
-echo "building and installing mono packages"
+echo "building mono packages"
 echo
 
 for i in "${PACKAGES[@]}"
@@ -69,6 +69,20 @@ do
 	cd $BUILDDIR/$i
 	./configure --prefix=$PREFIX
 	make
+	
+	if [ "$i" = ${PACKAGES[0]}]
+	then
+		sudo make install
+	fi
+done
+
+echo
+echo "installing mono packages"
+echo
+
+for i in "${PACKAGES[@]:1}"
+do
+	cd $BUILDDIR/$i
 	sudo make install
 done
 

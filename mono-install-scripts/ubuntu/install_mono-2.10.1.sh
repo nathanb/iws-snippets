@@ -24,29 +24,39 @@ echo
 
 cd $BUILDDIR
 
-declare -A PACKAGEFILES
-PACKAGEFILES=(["libgdiplus-2.10"]="http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.10.tar.bz2"
-["mono-2.10.1"]="http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.1.tar.bz2"
-["gtk-sharp-2.12.10"]="http://ftp.novell.com/pub/mono/sources/gtk-sharp212/gtk-sharp-2.12.10.tar.bz2"
-["xsp-2.10"]="http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.10.tar.bz2"
-["mod_mono-2.10"]="http://ftp.novell.com/pub/mono/sources/mod_mono/mod_mono-2.10.tar.bz2")
+PACKAGES=("mono-2.10.1"
+"libgdiplus-2.10"
+"gtk-sharp-2.12.10"
+"xsp-2.10"
+"mod_mono-2.10")
+
+URLS=("http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.1.tar.bz2"
+"http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.10.tar.bz2"
+"http://ftp.novell.com/pub/mono/sources/gtk-sharp212/gtk-sharp-2.12.10.tar.bz2"
+"http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.10.tar.bz2"
+"http://ftp.novell.com/pub/mono/sources/mod_mono/mod_mono-2.10.tar.bz2")
+
 
 echo Downloading
-for i in "${!PACKAGEFILES[@]}"
+count=${#PACKAGES[@]}
+index=0
+while [ "$index" -lt "$count" ]
 do
 	#only download it if you don't already have it. 
-	if [ ! -f "$i.tar" ]
+	if [ ! -f "${PACKAGES[$index]}.tar" ]
 	then
-		wget ${PACKAGEFILES[$i]}
+		wget "${URLS[@]:$index:1}"
 	fi
-	if [ -f "$i.tar.bz2" ]
+	if [ -f "${PACKAGES[$index]}.tar.bz2" ]
 	then
-		bunzip2 -df "$i.tar.bz2"
+		bunzip2 -df "${PACKAGES[$index]}.tar.bz2"
 	fi
-	if [ -f "$i.tar" ]
+	if [ -f "${PACKAGES[$index]}.tar" ]
 	then
-		tar -xvf "$i.tar"
+		tar -xvf "${PACKAGES[$index]}.tar"
 	fi
+	
+	let "index = $index + 1"
 done
 
 
@@ -54,7 +64,7 @@ echo
 echo "building and installing mono packages"
 echo
 
-for i in "${!PACKAGEFILES[@]}"
+for i in "${PACKAGES[@]}"
 do
 	cd $BUILDDIR/$i
 	./configure --prefix=$PREFIX

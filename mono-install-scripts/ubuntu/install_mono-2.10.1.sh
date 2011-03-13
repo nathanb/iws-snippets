@@ -70,7 +70,7 @@ do
 	./configure --prefix=$PREFIX
 	make
 	
-	if [ "$i" = ${PACKAGES[0]}]
+	if [ "$i" = ${PACKAGES[0]} ]
 	then
 		sudo make install
 	fi

@@ -10,11 +10,10 @@ export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
 
 
 echo "updating existing system"
-sudo apt-get update
-sudo apt-get upgrade -y
+yum update -y
 
 echo "installing prerequisites"
-sudo apt-get install -y build-essential libc6-dev g++ gcc libglib2.0-dev pkg-config git-core apache2 apache2-threaded-dev bison gettext autoconf automake libtool libpango1.0-dev libatk1.0-dev libgtk2.0-dev libtiff4-dev libgif-dev libglade2-dev gnome-devel libgnomecanvas2-dev libgnomeui-dev
+yum install -y make automake glibc-devel gcc-c++ gcc glib2-devel pkgconfig subversion bison gettext-libs autoconf httpd httpd-devel libtool wget libtiff-devel libexif-devel libexif libjpeg-devel gtk2-devel atk-devel pango-devel giflib-devel libglade2-develui-dev
 
 mkdir -p $BUILDDIR
 

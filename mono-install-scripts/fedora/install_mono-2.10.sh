@@ -1,10 +1,13 @@
-#!/bin/bash
+#!/bin/bash -e
 
 TOPDIR=$(pwd)
 BUILDDIR=$TOPDIR/build
+PREFIX=/opt/mono-2.10
 
-export PATH=/opt/mono-2.10/bin:$PATH
-export PKG_CONFIG_PATH=/opt/mono-2.10/lib/pkgconfig:$PKG_CONFIG_PATH
+export PATH=$PREFIX/bin:$PATH
+export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
+
 
 echo "updating existing system"
 yum update -y
@@ -20,63 +23,70 @@ echo
 
 cd $BUILDDIR
 
-wget http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.10.tar.bz2
-wget http://ftp.novell.com/pub/mono/sources/mod_mono/mod_mono-2.10.tar.bz2
-wget http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.1.tar.bz2
-wget http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.10.tar.bz2
-wget http://ftp.novell.com/pub/mono/sources/gtk-sharp212/gtk-sharp-2.12.10.tar.bz2
+PACKAGES=("mono-2.10.1"
+"libgdiplus-2.10"
+"gtk-sharp-2.12.10"
+"xsp-2.10"
+"mod_mono-2.10")
 
-cd $BUILDDIR
-bunzip2 -df xsp-2.10.tar.bz2
-tar -xvf xsp-2.10.tar
+URLS=("http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.1.tar.bz2"
+"http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.10.tar.bz2"
+"http://ftp.novell.com/pub/mono/sources/gtk-sharp212/gtk-sharp-2.12.10.tar.bz2"
+"http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.10.tar.bz2"
+"http://ftp.novell.com/pub/mono/sources/mod_mono/mod_mono-2.10.tar.bz2")
 
-bunzip2 -df mod_mono-2.10.tar.bz2
-tar -xvf mod_mono-2.10.tar
 
-bunzip2 -df mono-2.10.1.tar.bz2
-tar -xvf mono-2.10.1.tar
+echo Downloading
+count=${#PACKAGES[@]}
+index=0
+while [ "$index" -lt "$count" ]
+do
+	#only download it if you don't already have it. 
+	if [ ! -f "${PACKAGES[$index]}.tar" ]
+	then
+		wget "${URLS[@]:$index:1}"
+	fi
+	if [ -f "${PACKAGES[$index]}.tar.bz2" ]
+	then
+		bunzip2 -df "${PACKAGES[$index]}.tar.bz2"
+	fi
+	if [ -f "${PACKAGES[$index]}.tar" ]
+	then
+		tar -xvf "${PACKAGES[$index]}.tar"
+	fi
+	
+	let "index = $index + 1"
+done
 
-bunzip2 -df libgdiplus-2.10.tar.bz2
-tar -xvf libgdiplus-2.10.tar
-
-bunzip2 -df gtk-sharp-2.12.10.tar.bz2
-tar -xvf gtk-sharp-2.12.10.tar
 
 echo
-echo "building and installing mono packages"
+echo "building mono packages"
 echo
 
-cd $BUILDDIR
-cd libgdiplus-2.10
-./configure --prefix=/opt/mono-2.10
-make
-sudo make install
+for i in "${PACKAGES[@]}"
+do
+	cd $BUILDDIR/$i
+	./configure --prefix=$PREFIX
+	make
+	
+	if [ "$i" = ${PACKAGES[0]} ]
+	then
+		sudo make install
+	fi
+done
+
+echo
+echo "installing mono packages"
+echo
+
+for i in "${PACKAGES[@]:1}"
+do
+	cd $BUILDDIR/$i
+	sudo make install
+done
 
 cd $BUILDDIR
-cd mono-2.10.1
-./configure --prefix=/opt/mono-2.10
-make
-sudo make install
-
-cd $BUILDDIR
-cd gtk-sharp-2.12.10
-./configure --prefix=/opt/mono-2.10
-make
-sudo make install
-
-cd $BUILDDIR
-cd xsp-2.10
-./configure --prefix=/opt/mono-2.10
-make
-sudo make install
-
-cd $BUILDDIR
-cd mod_mono-2.10
-./configure --prefix=/opt/mono-2.10
-make
-sudo make install
-
-cd $BUILDDIR
-
 echo
 echo "done"
+
+

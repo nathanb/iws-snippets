@@ -1,4 +1,9 @@
 The tools & trunk scripts are completely experimental. Use them at your own risk. I try to keep these install scripts current with suggestions recommended on my blog at http://www.integratedwebsystems.com. 
 
+These scripts are labeled by the prefix they will install at.  They should all install the most recent release of Mono (with exception to noted older versions like 2.8).  
+
+The tools installer will install the latest release of tools supporting MonoDevelop. Along with it, a launcher script will be created in the build directory that you can move wherever you like. It sets up the runtime environment for MonoDevelop since it will not be installed to the system default location.  If you ever want to uninstall these packages (completely), then just delete the prefix. For example when installing the script install_mono-2.10.1, delete the folder /opt/mono-2.10.1 and all of it will be removed. 
+
+All work here is licensed under Creative Commons Attribution 3.0 Unported License. For details visit: http://creativecommons.org/licenses/by/3.0/
 
 

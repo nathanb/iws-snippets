@@ -24,7 +24,7 @@ echo
 
 cd $BUILDDIR
 
-PACKAGES=("mono-addins-0.5"
+PACKAGES=("mono-addins-0.6"
 "mono-debugger-2.10"
 "mono-tools-2.10"
 "gnome-sharp-2.24.1"
@@ -34,7 +34,7 @@ PACKAGES=("mono-addins-0.5"
 "gluezilla-2.6"
 )
 
-URLS=("http://ftp.novell.com/pub/mono/sources/mono-addins/mono-addins-0.5.tar.bz2"
+URLS=("http://ftp.novell.com/pub/mono/sources/mono-addins/mono-addins-0.6.tar.bz2"
 "http://ftp.novell.com/pub/mono/sources/mono-debugger/mono-debugger-2.10.tar.bz2"
 "http://ftp.novell.com/pub/mono/sources/mono-tools/mono-tools-2.10.tar.bz2"
 "http://ftp.novell.com/pub/mono/sources/gnome-sharp2/gnome-sharp-2.24.1.tar.bz2"

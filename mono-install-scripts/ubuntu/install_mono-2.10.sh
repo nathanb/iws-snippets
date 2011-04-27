@@ -24,16 +24,16 @@ echo
 
 cd $BUILDDIR
 
-PACKAGES=("mono-2.10.1"
+PACKAGES=("mono-2.10.2"
 "libgdiplus-2.10"
 "gtk-sharp-2.12.10"
-"xsp-2.10"
+"xsp-2.10.2"
 "mod_mono-2.10")
 
-URLS=("http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.1.tar.bz2"
+URLS=("http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.2.tar.bz2"
 "http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.10.tar.bz2"
 "http://ftp.novell.com/pub/mono/sources/gtk-sharp212/gtk-sharp-2.12.10.tar.bz2"
-"http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.10.tar.bz2"
+"http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.10.2.tar.bz2"
 "http://ftp.novell.com/pub/mono/sources/mod_mono/mod_mono-2.10.tar.bz2")
 
 

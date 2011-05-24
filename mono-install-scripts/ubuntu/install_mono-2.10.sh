@@ -30,11 +30,11 @@ PACKAGES=("mono-2.10.2"
 "xsp-2.10.2"
 "mod_mono-2.10")
 
-URLS=("http://ftp.novell.com/pub/mono/sources/mono/mono-2.10.2.tar.bz2"
-"http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-2.10.tar.bz2"
-"http://ftp.novell.com/pub/mono/sources/gtk-sharp212/gtk-sharp-2.12.10.tar.bz2"
-"http://ftp.novell.com/pub/mono/sources/xsp/xsp-2.10.2.tar.bz2"
-"http://ftp.novell.com/pub/mono/sources/mod_mono/mod_mono-2.10.tar.bz2")
+URLS=("https://github.com/mono/mono/tarball/2.10.2"
+"https://github.com/mono/libgdiplus/tarball/2.10"
+"https://github.com/mono/gtk-sharp/tarball/2.12.10"
+"https://github.com/mono/xsp/tarball/2.10.2"
+"https://github.com/mono/mod_mono/tarball/2.10")
 
 
 echo Downloading

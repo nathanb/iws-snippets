@@ -45,6 +45,7 @@ do
 	sudo make uninstall
 done
 
+cd $BUILDDIR
 echo Downloading
 count=${#PACKAGES[@]}
 index=0

@@ -23,7 +23,7 @@ echo
 
 cd $BUILDDIR
 
-OLDPACKAGES=("monodevelop-2.5.91"
+OLD=("monodevelop-2.5.91"
 "monodevelop-debugger-gdb-2.5.91"
 "monodevelop-database-2.5.91"
 )
@@ -38,7 +38,7 @@ URLS=("http://monodevelop.com/files/Linux/tarballs/monodevelop-2.5.92.tar.bz2"
 "http://monodevelop.com/files/Linux/tarballs/monodevelop-debugger-gdb-2.5.92.tar.bz2"
 "http://monodevelop.com/files/Linux/tarballs/monodevelop-database-2.5.92.tar.bz2"
 )
-for i in "${OLDPACKAGES[@]}"
+for i in "${OLD[@]}"
 do
 	cd $BUILDDIR/$i
 	sudo make uninstall

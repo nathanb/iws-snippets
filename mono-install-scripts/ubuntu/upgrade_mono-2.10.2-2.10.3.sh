@@ -24,8 +24,8 @@ echo
 
 cd $BUILDDIR
 
-OLDPKG=("mono-2.10.2"
-"gtk-sharp-2.12.10")
+OLDPKG=("mono-2.10.2")
+#"gtk-sharp-2.12.10") #for some reason this is bugged out, fails uninstall
 
 PACKAGES=("mono-2.10.3"
 "gtk-sharp-2.12.11")

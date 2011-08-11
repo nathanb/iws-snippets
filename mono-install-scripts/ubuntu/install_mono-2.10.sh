@@ -45,7 +45,7 @@ do
 	#only download it if you don't already have it. 
 	if [ ! -f "${PACKAGES[$index]}.tar" ]
 	then
-		wget "${URLS[@]:$index:1}"
+		wget -O "${PACKAGES[$index]}.tar.bz2" "${URLS[@]:$index:1}"
 	fi
 	if [ -f "${PACKAGES[$index]}.tar.bz2" ]
 	then

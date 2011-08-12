@@ -27,10 +27,10 @@ cd $BUILDDIR
 OLDPKG=("mono-2.10.2")
 #"gtk-sharp-2.12.10") #for some reason this is bugged out, fails uninstall
 
-PACKAGES=("mono-2.10.3"
+PACKAGES=("mono-2.10.4"
 "gtk-sharp-2.12.11")
 
-URLS=("http://download.mono-project.com/sources/mono/mono-2.10.3.tar.bz2"
+URLS=("http://download.mono-project.com/sources/mono/mono-2.10.4.tar.bz2"
 "http://download.mono-project.com/sources/gtk-sharp212/gtk-sharp-2.12.11.tar.bz2")
 
 for i in "${OLDPKG[@]}"

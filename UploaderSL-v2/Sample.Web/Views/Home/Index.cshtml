@@ -1,0 +1,128 @@
+﻿@{
+	ViewBag.Title = "Index";
+}
+@section Head {
+	<link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />
+	<script src="https://www.google.com/jsapi?key=" type="text/javascript"></script>
+	<script type="text/javascript">
+		google.load("jquery", "1");
+		google.load("jqueryui", "1.8");
+	</script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Silverlight.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.uploader.js")"></script>
+	<script type="text/javascript">
+		var route_prefix = '@Url.Content("~/Home/")';
+
+		$(document).ready(function () {
+			$('#SilverlightControl').uploader({
+				complete: function (success, message) {
+					$('#uploadBusy').hide();
+					if (!success)
+						alert(message);
+					else {
+						$('#new_resource').dialog('close');
+						alert('refresh or redirect.');
+					}
+					$('#progress').progressbar({ value: 0 });
+				},
+				progress: function (percent) {
+					$('#progress').progressbar({ value: percent });
+				},
+				starting: function () {
+					$('#uploadBusy').fadeIn();
+				},
+				url: route_prefix + 'Upload',
+				maxSize: 4096, //this is just a client-side helper. It's also set on the server-side.
+				uploadInividually: true, /*when true, this will upload them individually; otherwise, it will upload them all in one POST.*/
+				customData: null
+			});
+
+			$('.action-upload-file').click(function () {
+				$('#upload_dialog').dialog('open');
+				return false;
+			});
+
+			$('#upload_dialog').dialog({
+				autoOpen: false,
+				modal: true,
+				bgiframe: true,
+				title: "Upload Files",
+				width: 500,
+				height: 300,
+				buttons: {
+					'Close': function () { $('#upload_dialog').dialog('close'); }
+				}
+			});
+
+			$('#progress').progressbar({ value: 0 });
+		});
+
+		function onSilverlightError(sender, args) {
+			var appSource = "";
+			if (sender != null && sender != 0) {
+				appSource = sender.getHost().Source;
+			}
+
+			var errorType = args.ErrorType;
+			var iErrorCode = args.ErrorCode;
+
+			if (errorType == "ImageError" || errorType == "MediaError") {
+				return;
+			}
+
+			var errMsg = "Unhandled Error in Silverlight Application " + appSource + "\n";
+
+			errMsg += "Code: " + iErrorCode + "    \n";
+			errMsg += "Category: " + errorType + "       \n";
+			errMsg += "Message: " + args.ErrorMessage + "     \n";
+
+			if (errorType == "ParserError") {
+				errMsg += "File: " + args.xamlFile + "     \n";
+				errMsg += "Line: " + args.lineNumber + "     \n";
+				errMsg += "Position: " + args.charPosition + "     \n";
+			}
+			else if (errorType == "RuntimeError") {
+				if (args.lineNumber != 0) {
+					errMsg += "Line: " + args.lineNumber + "     \n";
+					errMsg += "Position: " + args.charPosition + "     \n";
+				}
+				errMsg += "MethodName: " + args.methodName + "     \n";
+			}
+
+			throw new Error(errMsg);
+		}
+	</script>
+}
+<h2>Index</h2>
+<p><a href="#" class="action-upload-file">Upload new file</a></p>
+
+<div id="upload_dialog" style="display: none;">
+	<h2>
+		Upload Files</h2>
+	<!-- Runtime errors from Silverlight will be displayed here.
+	This will contain debugging information and should be removed or hidden when debugging is completed -->
+	<div id='errorLocation' style="font-size: small; color: Gray;">
+	</div>
+	<div id="silverlightControlHost">
+		<object id="SilverlightControl" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
+			width="200px" height="30px">
+			<param name="source" value="@Url.Content("~/ClientBin/SLHttpUploader.xap?v=1.0.0.0")" />
+			<param name="onerror" value="onSilverlightError" />
+			<param name="background" value="white" />
+			<param name="onload" value="uploaderOnLoad" />
+			<param name="minRuntimeVersion" value="3.0.40818.0" />
+			<param name="autoUpgrade" value="true" />
+			<a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=3.0.40818.0" style="text-decoration: none">
+				<img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight"
+					style="border-style: none" />
+			</a>
+		</object>
+		<iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px;
+			border: 0px"></iframe>
+	</div>
+	<div id="progress">
+	</div>
+	<div id="uploadBusy" style="display: none;">
+		<img src="@Url.Content("~/Content/images/ajax-loader.gif")" alt="" />
+		Uploading... Please wait.</div>
+</div>

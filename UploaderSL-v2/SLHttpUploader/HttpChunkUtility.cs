@@ -16,7 +16,7 @@ using System.Runtime.Serialization.Json;
 
 namespace SLHttpUploader
 {
-	public class HttpUtility
+	public class HttpChunkUtility
 	{
 		System.Windows.Threading.Dispatcher dispatcher;
 		IEnumerable<FileInfo> files;
@@ -28,6 +28,8 @@ namespace SLHttpUploader
 		int uploadCount;
 		int lastFileSequenceProgressReport;
 		int lastFileContentProgressReport;
+		int chunkSize = 32768;
+		long bytesWritten = 0;
 
 		private event Action<UploadCompletedEventArgs> uploadCompleted;
 		public event Action<UploadCompletedEventArgs> UploadCompleted
@@ -50,7 +52,7 @@ namespace SLHttpUploader
 			remove { fileSequenceProgressReport -= value; }
 		}
 
-		public HttpUtility()
+		public HttpChunkUtility()
 		{
 			done = false;
 			lastFileSequenceProgressReport = 0;
@@ -58,104 +60,85 @@ namespace SLHttpUploader
 			uploadCount = 0;
 		}
 
-		public void PostFileContents(string url, IEnumerable<FileInfo> files, FilePostBehavior behavior, Dictionary<string, string> formData, System.Windows.Threading.Dispatcher dispatcher)
+		public void PostFileContents(string url, IEnumerable<FileInfo> files, FilePostBehavior behavior, Dictionary<string, string> formData, System.Windows.Threading.Dispatcher dispatcher, int? chunkSize)
 		{
+			throw new NotImplementedException("chunk upload is broken");
+
+			this.chunkSize = chunkSize ?? 32768;
 			this.dispatcher = dispatcher;
 			this.url = url;
 			this.behavior = behavior;
 			this.formData = formData;
 			this.files = files;
 			this.enumerator = files.GetEnumerator();
-			OnFileSequenceProgressReport(0, 1);
-			this.StartUpload();
+
+			bytesWritten = 0;
+			StartUpload();
 		}
 
 		void StartUpload()
 		{
 			try
 			{
+				//next chunk
+				OnFileSequenceProgressReport(0, 1);
 				//write to POST request
 				HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
-				req.AllowReadStreamBuffering = false;
 				req.Method = "POST";
 				var boundary = "---------------" + DateTime.Now.Ticks.ToString("x");
 				req.ContentType = string.Format("multipart/form-data; boundary={0}", boundary);
-				var info = new PostRequestInfo() { Files = files, FormData = formData, Request = req, Boundary = boundary, Dispatcher = dispatcher };
-
-				if (behavior == FilePostBehavior.OneAtATime)
-				{
-					if (enumerator.MoveNext())
-					{
-						info.Files = new List<FileInfo> { enumerator.Current };
-						req.BeginGetRequestStream(GetRequestStream, info);
-					}
-					else
-					{
-						done = true;
-						FinishUpload(info);
-					}
-				}
-				else
-					req.BeginGetRequestStream(GetRequestStream, info);
-
+				var info = new PostRequestInfo() { FormData = formData, Request = req, Boundary = boundary, Dispatcher = dispatcher, Files=new List<FileInfo> { enumerator.Current } };
+				req.BeginGetRequestStream(GetRequestStream, info);
 			}
 			catch (Exception ex)
 			{
 				OnUploadCompleted(false, ex);
 			}
 		}
+
 		void FinishUpload(PostRequestInfo info)
 		{
 			//request thread
 			this.dispatcher.BeginInvoke(() =>
 			{
-				//UI thread
-				if (behavior == FilePostBehavior.OneAtATime && !done)
-				{
-					uploadCount++;
-					OnFileSequenceProgressReport(uploadCount, files.Count());
-					StartUpload();
-				}
-				else
-				{
-					//should be totally done.  Fire an event to inform the front end that the upload is complete. 
-					OnFileSequenceProgressReport(1, 1);
-					OnUploadCompleted(true, null);
-				}
+				uploadCount++;
+				OnFileSequenceProgressReport(uploadCount, files.Count());
+				StartUpload();
 			});
 		}
-		void WriteFileContent(Stream destination, Stream source, string boundary, string filename, int index, long fileSize)
+		//just write the contents of the stream to the output buffer. 
+		void WriteFileContentRange(Stream destination, Stream source, string boundary, string filename, long fileSize, long contentStart)
 		{
 			var enc = new System.Text.UTF8Encoding(false, false);
-			string contentTemplate = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"File{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
-				boundary, index, filename, DetermineMimeTypeFromExtension(filename));
+			string contentTemplate = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"Chunk\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n",
+				boundary, filename, DetermineMimeTypeFromExtension(filename));
 
 			byte[] temp = enc.GetBytes(contentTemplate);
 			destination.Write(temp, 0, temp.Length);
 
-			byte[] buffer = new byte[1024*32];
+			byte[] buffer = new byte[this.chunkSize];
 			int read = 1;
-			long totalWritten = 0;
-			OnFileContentProgressReport(totalWritten, fileSize);
+			source.Seek(contentStart, SeekOrigin.Begin);
+
 
 			//write bytes from stream to output.
-			while (read > 0)
+			read = source.Read(buffer, 0, buffer.Length);
+			if (read > 0)
 			{
-				read = source.Read(buffer, 0, buffer.Length);
-				if (read > 0)
-				{
-					//test.Write(buffer, 0, read);
-					destination.Write(buffer, 0, read);
-					destination.Flush(); //blocks thread until sent. 
-					totalWritten += read;
-
-					//report progress. 
-					OnFileContentProgressReport(totalWritten, fileSize);
-				}
+				//test.Write(buffer, 0, read);
+				destination.Write(buffer, 0, read);
+				bytesWritten += read;
 			}
 
 			temp = enc.GetBytes("\r\n");
 			destination.Write(temp, 0, temp.Length);
+		}
+
+		void UploadChunk(PostRequestInfo info)
+		{
+		}
+		void FinishUploadChunk(PostRequestInfo info)
+		{
 		}
 
 		private void GetRequestStream(IAsyncResult result)
@@ -167,13 +150,10 @@ namespace SLHttpUploader
 			{
 				using (var stream = post.Request.EndGetRequestStream(result))
 				{
-					//based on behavior, would write multiple files or each file individually here. 
-					int counter = 0;
-					foreach (var file in post.Files)
+					var file = enumerator.Current;
+					using (var reader = file.OpenRead())
 					{
-						counter++;
-						using (var reader = file.OpenRead())
-							WriteFileContent(stream, reader, post.Boundary, file.Name, counter, file.Length);
+						WriteFileContentRange(stream, reader, post.Boundary, file.Name, file.Length, bytesWritten + 1 );
 					}
 
 					StringBuilder builder = new StringBuilder();
@@ -226,7 +206,12 @@ namespace SLHttpUploader
 				}
 
 				if (json != null && json.Success)
+				{
+					throw new NotImplementedException("fix this");
+					//if last chunk, then finish
+					//else continue sending chunks.
 					FinishUpload(post);
+				}
 				else
 					this.dispatcher.BeginInvoke(() => OnUploadCompleted(false, new Exception("Upload failed. - " + json.Message)));
 			}

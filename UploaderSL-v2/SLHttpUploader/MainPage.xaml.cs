@@ -17,6 +17,8 @@ namespace SLHttpUploader
 	public partial class MainPage : UserControl
 	{
 		Settings currentSettings;
+		int sequenceProgressCalls = 0;
+		int contentProgressCalls = 0;
 
 		public MainPage()
 		{
@@ -46,8 +48,9 @@ namespace SLHttpUploader
 				if (total <= currentSettings.MaxUploadSize)
 				{
 					HttpUtility utility = new HttpUtility();
-					utility.UploadCompleted += new UploadedCompletedEventHandler(utility_UploadCompleted);
-					utility.ProgressReport += new ProgressReportedEventHandler(utility_ProgressReport);
+					utility.UploadCompleted += new Action<UploadCompletedEventArgs>(utility_UploadCompleted);
+					utility.FileSequenceProgressReport += new Action<ProgressReportEventArgs>(utility_FileSequenceProgressReport);
+					utility.FileContentProgressReport += new Action<ProgressReportEventArgs>(utility_FileContentProgressReport);
 
 					callScriptStartup();
 					utility.PostFileContents(currentSettings.PostUrl,
@@ -56,27 +59,32 @@ namespace SLHttpUploader
 						this.Dispatcher);
 				}
 				else
-					utility_UploadCompleted(null, new UploadCompletedEventArgs() { Success = false, Error = new Exception("File size too large.") });
+					utility_UploadCompleted(new UploadCompletedEventArgs() { Success = false, Error = new Exception("File size too large.") });
 			}
 		}
-		int progressCalls = 0;
+
+		void utility_FileContentProgressReport(ProgressReportEventArgs e)
+		{
+			contentProgressCalls++;
+			HtmlPage.Window.Invoke(currentSettings.ScriptContentProgressHandler, e.Percentage);
+		}
 		void callScriptStartup()
 		{
 			HtmlPage.Window.Invoke(currentSettings.ScriptStartupHandler);
 		}
-		void utility_ProgressReport(object sender, ProgressReportEventArgs e)
+		void utility_FileSequenceProgressReport(ProgressReportEventArgs e)
 		{
-			progressCalls++;
-			HtmlPage.Window.Invoke(currentSettings.ScriptProgressHandler, e.Percentage);
+			sequenceProgressCalls++;
+			HtmlPage.Window.Invoke(currentSettings.ScriptSequenceProgressHandler, e.Percentage);
 		}
 
-		void utility_UploadCompleted(object sender, UploadCompletedEventArgs e)
+		void utility_UploadCompleted(UploadCompletedEventArgs e)
 		{
 			HtmlPage.Window.Invoke(currentSettings.ScriptCompletedHandler, e.Success, e.Error != null ? e.Error.Message : string.Empty);
 		}
 
 		[ScriptableMember]
-		public void Setup(string url, int maxUploadSize, bool uploadFilesIndividually, string progressHandler, string completeHandler, string startupHandler, string customData, string buttonText)
+		public void Setup(string url, int maxUploadSize, bool uploadFilesIndividually, string sequenceProgressHandler, string contentProgressHandler, string completeHandler, string startupHandler, string customData, string buttonText)
 		{
 			if (!string.IsNullOrEmpty(buttonText))
 				this.uxSelectFiles.Content = buttonText;
@@ -88,7 +96,8 @@ namespace SLHttpUploader
 				currentSettings.PostUrl = Utility.BaseUrl + url.TrimStart('/');
 
 			currentSettings.ScriptCompletedHandler = completeHandler;
-			currentSettings.ScriptProgressHandler = progressHandler;
+			currentSettings.ScriptSequenceProgressHandler = sequenceProgressHandler;
+			currentSettings.ScriptContentProgressHandler = contentProgressHandler;
 			currentSettings.ScriptStartupHandler = startupHandler;
 
 			//parse customData

@@ -8,8 +8,12 @@
 				}
 			});
 		},
-		progress: function (percent) {
-			this.uploader.settings.progress(percent);
+		sequenceProgress: function (percent) {
+			this.uploader.settings.sequenceProgress(percent);
+			return this;
+		},
+		contentProgress: function (percent) {
+			this.uploader.settings.contentProgress(percent);
 			return this;
 		},
 		complete: function (success, message) {
@@ -37,13 +41,15 @@
 
 	$.fn.uploader.settings = {
 		'complete': function (success, message) { },
-		'progress': function (percent) { },
+		'sequenceProgress': function (percent) { },
+		'contentProgress': function (percent) { },
 		'starting': function () { },
 		'url': 'http://localhost/Test/Upload',
 		'maxSize': 30720,
 		'uploadInividually': true,
 		'callbackCompleted': 'uploadComplete',
-		'callbackProgress': 'uploadProgress',
+		'callbackSequenceProgress': 'uploadSequenceProgress',
+		'callbackContentProgress': 'uploadContentProgress',
 		'callbackStarting': 'uploadStarting',
 		'customData': null,
 		'buttonText': 'Select Files'
@@ -52,8 +58,11 @@
 
 
 //default callbacks for this silverlight control
-function uploadProgress(percent) {
-	$('#SilverlightControl').uploader('progress', percent);
+function uploadSequenceProgress(percent) {
+	$('#SilverlightControl').uploader('sequenceProgress', percent);
+}
+function uploadContentProgress(percent) {
+	$('#SilverlightControl').uploader('contentProgress', percent);
 }
 function uploadComplete(success, message) {
 	$('#SilverlightControl').uploader('complete', success, message);
@@ -65,7 +74,7 @@ function uploadStarting() {
 function uploaderOnLoad() {
 	var settings = $('#SilverlightControl').uploader.settings;
 	var raw = document.getElementById("SilverlightControl");
-	raw.content.page.Setup(settings.url, settings.maxSize, settings.uploadInividually, settings.callbackProgress, settings.callbackCompleted, settings.callbackStarting, serializeCustomData(settings.customData), settings.buttonText);
+	raw.content.page.Setup(settings.url, settings.maxSize, settings.uploadInividually, settings.callbackSequenceProgress, settings.callbackContentProgress, settings.callbackCompleted, settings.callbackStarting, serializeCustomData(settings.customData), settings.buttonText);
 }
 
 function serializeCustomData(data) {

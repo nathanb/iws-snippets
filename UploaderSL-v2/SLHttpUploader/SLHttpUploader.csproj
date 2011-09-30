@@ -78,13 +78,20 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ChunkInfo.cs" />
+    <Compile Include="ChunkSequence.cs" />
+    <Compile Include="FilePostBehavior.cs" />
+    <Compile Include="HttpChunkUtility.cs" />
     <Compile Include="HttpUtility.cs" />
     <Compile Include="JsonResponse.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PostRequestInfo.cs" />
+    <Compile Include="ProgressReportEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UploadCompletedEventArgs.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>

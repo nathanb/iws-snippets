@@ -17,7 +17,8 @@ namespace SLHttpUploader
 		public string PostUrl { get; set; }
 		public bool UploadFilesIndividually { get; set; }
 		public int MaxUploadSize { get; set; }
-		public string ScriptProgressHandler { get; set; }
+		public string ScriptSequenceProgressHandler { get; set; }
+		public string ScriptContentProgressHandler { get; set; }
 		public string ScriptCompletedHandler { get; set; }
 		public string ScriptStartupHandler { get; set; }
 		public Dictionary<string,string> CustomData { get; set; }

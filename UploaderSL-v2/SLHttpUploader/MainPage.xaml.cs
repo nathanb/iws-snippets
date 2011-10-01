@@ -47,7 +47,7 @@ namespace SLHttpUploader
 
 				if (total <= currentSettings.MaxUploadSize)
 				{
-					HttpUtility utility = new HttpUtility();
+					var utility = new HttpChunkUtility();
 					utility.UploadCompleted += new Action<UploadCompletedEventArgs>(utility_UploadCompleted);
 					utility.FileSequenceProgressReport += new Action<ProgressReportEventArgs>(utility_FileSequenceProgressReport);
 					utility.FileContentProgressReport += new Action<ProgressReportEventArgs>(utility_FileContentProgressReport);
@@ -56,7 +56,7 @@ namespace SLHttpUploader
 					utility.PostFileContents(currentSettings.PostUrl,
 						of.Files, currentSettings.UploadFilesIndividually ? FilePostBehavior.OneAtATime : FilePostBehavior.AllAtOnce,
 						currentSettings.CustomData,
-						this.Dispatcher);
+						this.Dispatcher, null); //default chunk
 				}
 				else
 					utility_UploadCompleted(new UploadCompletedEventArgs() { Success = false, Error = new Exception("File size too large.") });

@@ -19,7 +19,7 @@ namespace SLHttpUploader
 	public class PostRequestInfo
 	{
 		public IEnumerable<FileInfo> Files { get; set; }
-		public Dictionary<string, string> FormData { get; set; }
+		public IDictionary<string, string> FormData { get; set; }
 		public FilePostBehavior Behavior { get; set; }
 		public WebRequest Request { get; set; }
 		public string Boundary { get; set; }

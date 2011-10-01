@@ -7,6 +7,7 @@ namespace SLHttpUploader
 {
 	public enum ChunkSequence
 	{
+		NA,
 		Body,
 		End
 	}

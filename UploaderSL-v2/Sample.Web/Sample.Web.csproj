@@ -89,6 +89,7 @@
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Scripts\jquery.uploader.js" />
     <Content Include="Scripts\Silverlight.js" />
+    <Content Include="test.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

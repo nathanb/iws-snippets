@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace SLHttpUploader
 {
@@ -21,6 +22,13 @@ namespace SLHttpUploader
 				string newpath = full.Substring(0, full.LastIndexOf('/')) + "/../";
 				return newpath;
 			}
+		}
+
+		public static string GetSHA256Hash(Stream source)
+		{
+			var sha = new System.Security.Cryptography.SHA1Managed();
+			byte[] hash = sha.ComputeHash(source);
+			return Convert.ToBase64String(hash);
 		}
 	}
 }

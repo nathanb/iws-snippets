@@ -65,6 +65,12 @@ namespace Sample.Web
 			byte[] result = sha.ComputeHash(data);
 			return Convert.ToBase64String(result);
 		}
+		public static string GetHashSHA1(Stream data)
+		{
+			System.Security.Cryptography.SHA1Managed sha = new System.Security.Cryptography.SHA1Managed();
+			byte[] result = sha.ComputeHash(data);
+			return Convert.ToBase64String(result);
+		}
 		public static string GetRandomString(int length)
 		{
 			//returns random string of length specified with characters including: 0-9, a-z, A-Z

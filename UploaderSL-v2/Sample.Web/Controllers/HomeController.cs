@@ -17,7 +17,8 @@ namespace Sample.Web.Controllers
 			return View();
 		}
 
-		public ActionResult Upload()
+		[HttpPost]
+		public JsonResult Upload()
 		{
 			try
 			{
@@ -55,27 +56,33 @@ namespace Sample.Web.Controllers
 		[HttpPost]
 		public JsonResult UploadChunked(ChunkInfo post)
 		{
+			string path = null;
 			try
 			{
 				if (Request.Files.Count > 0)
 				{
-					var file = Server.MapPath("~/App_Data/" + post.FileId.ToString());
-					AppendFileContent(file);
+					var postedFile = Request.Files[0];
+					path = Server.MapPath("~/App_Data/" + postedFile.FileName); //using filename as the identifier (GUID)
+					AppendPostedFileContent(postedFile, path);
 					if (post.Sequence == ChunkSequence.End)
 					{
 						//validate full file hash. 
 						string hash = null;
-						using (var fs = System.IO.File.OpenRead(file))
-							hash = TextUtility.GetHashSHA256(fs);
+						using (var fs = System.IO.File.OpenRead(path))
+							hash = TextUtility.GetHashSHA1(fs);
 						if (hash == post.Hash)
 						{
 							//success... send file to storage.
-							System.IO.File.Move(file, Server.MapPath("~/App_Data/" + post.Filename));
+							var newPath = Server.MapPath("~/App_Data/" + post.Filename);
+							if (System.IO.File.Exists(newPath))
+								System.IO.File.Delete(newPath);
+							System.IO.File.Move(path, newPath); //using the posted Filename in the last chunk request to determine final name. 
 							return Json(new { Success = true });
 						}
 						else
 						{
 							//fail...resend.
+							System.IO.File.Delete(path); //cleanup
 							return Json(new { Success = false, Message = "Hash fail" });
 						}
 					}
@@ -83,18 +90,24 @@ namespace Sample.Web.Controllers
 			}
 			catch (Exception ex)
 			{
+				try
+				{
+					if (System.IO.File.Exists(path))
+						System.IO.File.Delete(path);
+				}
+				catch { } //swallow it. if it's write permissions, we already know about it. this is just an attempt to cleanup.
+
 				return Json(new { Success = false, Message = ex.Message });
 			}
 			return Json(new { Success = true });
 		}
 
-		private void AppendFileContent(string file)
+		private void AppendPostedFileContent(HttpPostedFileBase postedData, string path)
 		{
-			var postedData = Request.Files[0];
 			byte[] buffer = new byte[32*1024];
 			int read = 1;
 
-			using (var fs = System.IO.File.Open(file, FileMode.Append, FileAccess.Write, FileShare.None))
+			using (var fs = System.IO.File.Open(path, FileMode.Append, FileAccess.Write, FileShare.None))
 			{
 				while (read > 0)
 				{

@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Web Developer Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Web", "Sample.Web\Sample.Web.csproj", "{B8F98EB9-B97D-40C8-B577-88359CDCD587}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploaderSL.MVC", "UploaderSL.MVC\UploaderSL.MVC.csproj", "{260338E3-CCB0-489D-8C02-F7AAEBFA0121}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLHttpUploader", "SLHttpUploader\SLHttpUploader.csproj", "{286CA30D-045B-4626-8A28-06AAD04FABFE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8F98EB9-B97D-40C8-B577-88359CDCD587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8F98EB9-B97D-40C8-B577-88359CDCD587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8F98EB9-B97D-40C8-B577-88359CDCD587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8F98EB9-B97D-40C8-B577-88359CDCD587}.Release|Any CPU.Build.0 = Release|Any CPU
+		{260338E3-CCB0-489D-8C02-F7AAEBFA0121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{260338E3-CCB0-489D-8C02-F7AAEBFA0121}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{260338E3-CCB0-489D-8C02-F7AAEBFA0121}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{260338E3-CCB0-489D-8C02-F7AAEBFA0121}.Release|Any CPU.Build.0 = Release|Any CPU
+		{286CA30D-045B-4626-8A28-06AAD04FABFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{286CA30D-045B-4626-8A28-06AAD04FABFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{286CA30D-045B-4626-8A28-06AAD04FABFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{286CA30D-045B-4626-8A28-06AAD04FABFE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

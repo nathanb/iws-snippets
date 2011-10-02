@@ -42,6 +42,7 @@ namespace UploaderSL.MVC
 							uploadResult.FileUploadComplete = true;
 							uploadResult.OriginalFilename = post.Filename;
 							uploadResult.TempFilePath = path;
+							uploadResult.ContentType = postedFile.ContentType;
 						}
 						else
 						{

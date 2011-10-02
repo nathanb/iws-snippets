@@ -12,5 +12,6 @@ namespace UploaderSL.MVC
 		public string Message { get; set; }
 		public string TempFilePath { get; set; }
 		public string OriginalFilename { get; set; }
+		public string ContentType { get; set; }
 	}
 }

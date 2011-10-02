@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
+using UploaderSL.MVC;
 
 namespace Sample.Web.Controllers
 {
@@ -48,74 +49,38 @@ namespace Sample.Web.Controllers
 			}
 			catch (Exception ex)
 			{
-				return Json(new { Success=false, Message = ex.Message });
-			} 
-			return Json(new { Success = true });
-		}
-
-		[HttpPost]
-		public JsonResult UploadChunked(ChunkInfo post)
-		{
-			string path = null;
-			try
-			{
-				if (Request.Files.Count > 0)
-				{
-					var postedFile = Request.Files[0];
-					path = Server.MapPath("~/App_Data/" + postedFile.FileName); //using filename as the identifier (GUID)
-					AppendPostedFileContent(postedFile, path);
-					if (post.Sequence == ChunkSequence.End)
-					{
-						//validate full file hash. 
-						string hash = null;
-						using (var fs = System.IO.File.OpenRead(path))
-							hash = TextUtility.GetHashSHA1(fs);
-						if (hash == post.Hash)
-						{
-							//success... send file to storage.
-							var newPath = Server.MapPath("~/App_Data/" + post.Filename);
-							if (System.IO.File.Exists(newPath))
-								System.IO.File.Delete(newPath);
-							System.IO.File.Move(path, newPath); //using the posted Filename in the last chunk request to determine final name. 
-							return Json(new { Success = true });
-						}
-						else
-						{
-							//fail...resend.
-							System.IO.File.Delete(path); //cleanup
-							return Json(new { Success = false, Message = "Hash fail" });
-						}
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				try
-				{
-					if (System.IO.File.Exists(path))
-						System.IO.File.Delete(path);
-				}
-				catch { } //swallow it. if it's write permissions, we already know about it. this is just an attempt to cleanup.
-
 				return Json(new { Success = false, Message = ex.Message });
 			}
 			return Json(new { Success = true });
 		}
 
-		private void AppendPostedFileContent(HttpPostedFileBase postedData, string path)
+		[HttpPost]
+		[ChunkUploadHandler]
+		public JsonResult UploadChunked(ChunkUploadResult result)
 		{
-			byte[] buffer = new byte[32*1024];
-			int read = 1;
-
-			using (var fs = System.IO.File.Open(path, FileMode.Append, FileAccess.Write, FileShare.None))
+			//this is important because the uploader will make multiple requests for this action. 
+			//when the upload (for an individual file) is complete, check these two variables for a finished upload.
+			if (result.Success && result.FileUploadComplete)
 			{
-				while (read > 0)
+				try
 				{
-					read = postedData.InputStream.Read(buffer, 0, buffer.Length);
-					if (read > 0)
-						fs.Write(buffer, 0, read);
+					string path = Server.MapPath("~/App_Data/" + result.OriginalFilename);
+					if (System.IO.File.Exists(path))
+						System.IO.File.Delete(path);
+					System.IO.File.Move(result.TempFilePath, path); //using the posted Filename in the last chunk request to determine final name. 
+				}
+				catch
+				{
+					//cleanup, remove temp file.
+					try
+					{
+						if (System.IO.File.Exists(result.TempFilePath))
+							System.IO.File.Delete(result.TempFilePath);
+					}
+					catch { } //swallow it. at this point, we're only attempting to cleanup an orphaned file. 
 				}
 			}
+			return Json(new { Success = result.Success, Message = result.Message });
 		}
 	}
 }

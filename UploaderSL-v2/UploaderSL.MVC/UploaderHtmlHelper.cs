@@ -17,10 +17,7 @@ namespace UploaderSL.MVC
 
 		public static string UploaderSL(this HtmlHelper helper, string id, string theme, string language)
 		{
-			//var captchaControl = new Recaptcha.RecaptchaControl();
 			var htmlWriter = new HtmlTextWriter(new StringWriter());
-
-			//aptchaControl.RenderControl(htmlWriter);
 
 			return htmlWriter.InnerWriter.ToString();
 		}

@@ -16,7 +16,7 @@ using System.Runtime.Serialization.Json;
 
 namespace SLHttpUploader
 {
-	public class HttpChunkUtility
+	public class HttpChunkUtility : IHttpUtility
 	{
 		System.Windows.Threading.Dispatcher dispatcher;
 		FilePostBehavior behavior;
@@ -25,7 +25,7 @@ namespace SLHttpUploader
 		IEnumerator<FileInfo> enumerator;
 		int lastFileSequenceProgressReport;
 		int lastFileContentProgressReport;
-		int chunkSize = 32768;
+		int chunkSize = 204800;
 		int filesTransferred = 0;
 		int filesToTransfer = 0;
 		long currentFilePosition = 0;
@@ -55,16 +55,16 @@ namespace SLHttpUploader
 		}
 		#endregion
 
-		public HttpChunkUtility()
+		public HttpChunkUtility(int? chunkSize)
 		{
+			this.chunkSize = chunkSize ?? 204800;
 			lastFileSequenceProgressReport = 0;
 			lastFileContentProgressReport = 0;
 			currentFilePosition = 0;
 		}
 
-		public void PostFileContents(string url, IEnumerable<FileInfo> files, FilePostBehavior behavior, IDictionary<string, string> formData, System.Windows.Threading.Dispatcher dispatcher, int? chunkSize)
+		public void PostFileContents(string url, IEnumerable<FileInfo> files, FilePostBehavior behavior, IDictionary<string, string> formData, System.Windows.Threading.Dispatcher dispatcher)
 		{
-			this.chunkSize = chunkSize ?? 256000;
 			this.dispatcher = dispatcher;
 			this.url = url;
 			this.behavior = behavior;

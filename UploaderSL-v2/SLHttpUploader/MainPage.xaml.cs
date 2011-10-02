@@ -47,7 +47,12 @@ namespace SLHttpUploader
 
 				if (total <= currentSettings.MaxUploadSize)
 				{
-					var utility = new HttpChunkUtility();
+					IHttpUtility utility = null;
+					if (currentSettings.UploadChunked)
+						utility = new HttpChunkUtility(currentSettings.ChunkSize);
+					else
+						utility = new HttpUtility();
+
 					utility.UploadCompleted += new Action<UploadCompletedEventArgs>(utility_UploadCompleted);
 					utility.FileSequenceProgressReport += new Action<ProgressReportEventArgs>(utility_FileSequenceProgressReport);
 					utility.FileContentProgressReport += new Action<ProgressReportEventArgs>(utility_FileContentProgressReport);
@@ -56,7 +61,7 @@ namespace SLHttpUploader
 					utility.PostFileContents(currentSettings.PostUrl,
 						of.Files, currentSettings.UploadFilesIndividually ? FilePostBehavior.OneAtATime : FilePostBehavior.AllAtOnce,
 						currentSettings.CustomData,
-						this.Dispatcher, null); //default chunk
+						this.Dispatcher); //default chunk
 				}
 				else
 					utility_UploadCompleted(new UploadCompletedEventArgs() { Success = false, Error = new Exception("File size too large.") });
@@ -84,7 +89,7 @@ namespace SLHttpUploader
 		}
 
 		[ScriptableMember]
-		public void Setup(string url, int maxUploadSize, bool uploadFilesIndividually, string sequenceProgressHandler, string contentProgressHandler, string completeHandler, string startupHandler, string customData, string buttonText)
+		public void Setup(string url, int maxUploadSize, bool uploadFilesIndividually, string sequenceProgressHandler, string contentProgressHandler, string completeHandler, string startupHandler, string customData, string buttonText, bool uploadChunked, int chunkSize)
 		{
 			if (!string.IsNullOrEmpty(buttonText))
 				this.uxSelectFiles.Content = buttonText;
@@ -99,6 +104,9 @@ namespace SLHttpUploader
 			currentSettings.ScriptSequenceProgressHandler = sequenceProgressHandler;
 			currentSettings.ScriptContentProgressHandler = contentProgressHandler;
 			currentSettings.ScriptStartupHandler = startupHandler;
+
+			currentSettings.UploadChunked = uploadChunked;
+			currentSettings.ChunkSize = chunkSize == 0 ? null as int? : chunkSize;
 
 			//parse customData
 			currentSettings.CustomData = parseCustomData(customData);

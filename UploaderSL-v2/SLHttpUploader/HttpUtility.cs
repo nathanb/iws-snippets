@@ -16,12 +16,12 @@ using System.Runtime.Serialization.Json;
 
 namespace SLHttpUploader
 {
-	public class HttpUtility
+	public class HttpUtility : IHttpUtility
 	{
 		System.Windows.Threading.Dispatcher dispatcher;
 		IEnumerable<FileInfo> files;
 		FilePostBehavior behavior;
-		Dictionary<string, string> formData;
+		IDictionary<string, string> formData;
 		string url;
 		IEnumerator<FileInfo> enumerator;
 		bool done;
@@ -58,7 +58,7 @@ namespace SLHttpUploader
 			uploadCount = 0;
 		}
 
-		public void PostFileContents(string url, IEnumerable<FileInfo> files, FilePostBehavior behavior, Dictionary<string, string> formData, System.Windows.Threading.Dispatcher dispatcher)
+		public void PostFileContents(string url, IEnumerable<FileInfo> files, FilePostBehavior behavior, IDictionary<string, string> formData, System.Windows.Threading.Dispatcher dispatcher)
 		{
 			this.dispatcher = dispatcher;
 			this.url = url;
@@ -136,7 +136,6 @@ namespace SLHttpUploader
 			byte[] buffer = new byte[1024*32];
 			int read = 1;
 			long totalWritten = 0;
-			OnFileContentProgressReport(totalWritten, fileSize);
 
 			//write bytes from stream to output.
 			while (read > 0)
@@ -148,9 +147,6 @@ namespace SLHttpUploader
 					destination.Write(buffer, 0, read);
 					destination.Flush(); //blocks thread until sent. 
 					totalWritten += read;
-
-					//report progress. 
-					OnFileContentProgressReport(totalWritten, fileSize);
 				}
 			}
 

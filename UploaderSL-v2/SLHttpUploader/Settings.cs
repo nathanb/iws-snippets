@@ -22,5 +22,7 @@ namespace SLHttpUploader
 		public string ScriptCompletedHandler { get; set; }
 		public string ScriptStartupHandler { get; set; }
 		public Dictionary<string,string> CustomData { get; set; }
+		public bool UploadChunked { get; set; }
+		public int? ChunkSize { get; set; }
 	}
 }

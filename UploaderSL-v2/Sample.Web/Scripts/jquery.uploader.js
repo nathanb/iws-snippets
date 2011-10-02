@@ -52,7 +52,9 @@
 		'callbackContentProgress': 'uploadContentProgress',
 		'callbackStarting': 'uploadStarting',
 		'customData': null,
-		'buttonText': 'Select Files'
+		'buttonText': 'Select Files',
+		'uploadChunked' : false,
+		'chunkSize': 0 //default of 200 KB
 	};
 })(jQuery);
 
@@ -74,7 +76,7 @@ function uploadStarting() {
 function uploaderOnLoad() {
 	var settings = $('#SilverlightControl').uploader.settings;
 	var raw = document.getElementById("SilverlightControl");
-	raw.content.page.Setup(settings.url, settings.maxSize, settings.uploadInividually, settings.callbackSequenceProgress, settings.callbackContentProgress, settings.callbackCompleted, settings.callbackStarting, serializeCustomData(settings.customData), settings.buttonText);
+	raw.content.page.Setup(settings.url, settings.maxSize, settings.uploadInividually, settings.callbackSequenceProgress, settings.callbackContentProgress, settings.callbackCompleted, settings.callbackStarting, serializeCustomData(settings.customData), settings.buttonText, settings.uploadChunked, settings.chunkSize);
 }
 
 function serializeCustomData(data) {

@@ -83,6 +83,7 @@
     <Compile Include="FilePostBehavior.cs" />
     <Compile Include="HttpChunkUtility.cs" />
     <Compile Include="HttpUtility.cs" />
+    <Compile Include="IHttpUtility.cs" />
     <Compile Include="JsonResponse.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

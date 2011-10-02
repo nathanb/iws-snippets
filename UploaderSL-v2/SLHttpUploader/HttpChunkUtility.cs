@@ -101,6 +101,7 @@ namespace SLHttpUploader
 
 			if (sentEndChunk)
 			{
+				filesTransferred++;
 				if (enumerator.MoveNext())
 					StartNextFile();
 				else

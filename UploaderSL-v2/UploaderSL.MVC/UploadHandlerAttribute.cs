@@ -28,6 +28,9 @@ namespace UploaderSL.MVC
 					var postedFile = filterContext.HttpContext.Request.Files[0];
 					path = filterContext.HttpContext.Server.MapPath("~/App_Data/" + postedFile.FileName); //using filename as the identifier (GUID)
 					AppendPostedFileContent(postedFile, path);
+
+					uploadResult.ContentType = postedFile.ContentType;
+					uploadResult.TempFilePath = path;
 					
 					if (post.Sequence == ChunkSequence.End)
 					{
@@ -41,8 +44,6 @@ namespace UploaderSL.MVC
 							uploadResult.Success = true;
 							uploadResult.FileUploadComplete = true;
 							uploadResult.OriginalFilename = post.Filename;
-							uploadResult.TempFilePath = path;
-							uploadResult.ContentType = postedFile.ContentType;
 						}
 						else
 						{

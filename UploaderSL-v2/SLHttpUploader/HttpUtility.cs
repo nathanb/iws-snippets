@@ -101,7 +101,7 @@ namespace SLHttpUploader
 			}
 			catch (Exception ex)
 			{
-				OnUploadCompleted(false, ex);
+				OnUploadCompleted(false, ex.Message);
 			}
 		}
 		void FinishUpload(PostRequestInfo info)
@@ -193,7 +193,7 @@ namespace SLHttpUploader
 			}
 			catch (Exception ex)
 			{
-				this.dispatcher.BeginInvoke(() => OnUploadCompleted(false, ex));
+				this.dispatcher.BeginInvoke(() => OnUploadCompleted(false, ex.Message));
 			}
 		}
 		private void GetResponse(IAsyncResult result)
@@ -224,19 +224,19 @@ namespace SLHttpUploader
 				if (json != null && json.Success)
 					FinishUpload(post);
 				else
-					this.dispatcher.BeginInvoke(() => OnUploadCompleted(false, new Exception("Upload failed. - " + json.Message)));
+					this.dispatcher.BeginInvoke(() => OnUploadCompleted(false, "Upload failed. - " + json.Message));
 			}
 			catch (Exception ex)
 			{
-				this.dispatcher.BeginInvoke(() => OnUploadCompleted(false, ex));
+				this.dispatcher.BeginInvoke(() => OnUploadCompleted(false, ex.Message));
 			}
 		}
 
-		protected void OnUploadCompleted(bool success, Exception error)
+		protected void OnUploadCompleted(bool success, string message)
 		{
 			//all callers are in the UI thread. 
 			if (uploadCompleted != null)
-				uploadCompleted(new UploadCompletedEventArgs() { Error = error, Success = success });
+				uploadCompleted(new UploadCompletedEventArgs() { Message = message, Success = success });
 		}
 		protected void OnFileSequenceProgressReport(long current, long total)
 		{

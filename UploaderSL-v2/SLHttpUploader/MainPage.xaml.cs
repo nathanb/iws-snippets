@@ -47,24 +47,31 @@ namespace SLHttpUploader
 
 				if (total <= currentSettings.MaxUploadSize)
 				{
-					IHttpUtility utility = null;
-					if (currentSettings.UploadChunked)
-						utility = new HttpChunkUtility(currentSettings.ChunkSize);
-					else
-						utility = new HttpUtility();
+					try
+					{
+						IHttpUtility utility = null;
+						if (currentSettings.UploadChunked)
+							utility = new HttpChunkUtility(currentSettings.ChunkSize);
+						else
+							utility = new HttpUtility();
 
-					utility.UploadCompleted += new Action<UploadCompletedEventArgs>(utility_UploadCompleted);
-					utility.FileSequenceProgressReport += new Action<ProgressReportEventArgs>(utility_FileSequenceProgressReport);
-					utility.FileContentProgressReport += new Action<ProgressReportEventArgs>(utility_FileContentProgressReport);
+						utility.UploadCompleted += new Action<UploadCompletedEventArgs>(utility_UploadCompleted);
+						utility.FileSequenceProgressReport += new Action<ProgressReportEventArgs>(utility_FileSequenceProgressReport);
+						utility.FileContentProgressReport += new Action<ProgressReportEventArgs>(utility_FileContentProgressReport);
 
-					callScriptStartup();
-					utility.PostFileContents(currentSettings.PostUrl,
-						of.Files, currentSettings.UploadFilesIndividually ? FilePostBehavior.OneAtATime : FilePostBehavior.AllAtOnce,
-						currentSettings.CustomData,
-						this.Dispatcher); //default chunk
+						callScriptStartup();
+						utility.PostFileContents(currentSettings.PostUrl,
+							of.Files, currentSettings.UploadFilesIndividually ? FilePostBehavior.OneAtATime : FilePostBehavior.AllAtOnce,
+							currentSettings.CustomData,
+							this.Dispatcher); //default chunk
+					}
+					catch (Exception ex)
+					{
+						utility_UploadCompleted(new UploadCompletedEventArgs() { Success = false, Message = ex.Message });
+					}
 				}
 				else
-					utility_UploadCompleted(new UploadCompletedEventArgs() { Success = false, Error = new Exception("File size too large.") });
+					utility_UploadCompleted(new UploadCompletedEventArgs() { Success = false, Message = string.Format("File size too large. The current files size limit is, {0} MB" , (currentSettings.MaxUploadSize / 1024 ).ToString("N2"))});
 			}
 		}
 
@@ -85,7 +92,7 @@ namespace SLHttpUploader
 
 		void utility_UploadCompleted(UploadCompletedEventArgs e)
 		{
-			HtmlPage.Window.Invoke(currentSettings.ScriptCompletedHandler, e.Success, e.Error != null ? e.Error.Message : string.Empty);
+			HtmlPage.Window.Invoke(currentSettings.ScriptCompletedHandler, e.Success, e.Message);
 		}
 
 		[ScriptableMember]

@@ -143,62 +143,76 @@ namespace SLHttpUploader
 		}
 		private void WriteRequestStream(IAsyncResult result)
 		{
-			var post = (PostRequestInfo)result.AsyncState;
-			var enc = new System.Text.UTF8Encoding(false, false);
-
-			using (var stream = post.Request.EndGetRequestStream(result))
+			try
 			{
-				//write file content
-				var file = enumerator.Current;
-				using (var reader = file.OpenRead())
-					WriteFileContentRange(stream, reader, post.Boundary); //use the GuiD fileId as the filename. server-side will concatenate this file. 
+				var post = (PostRequestInfo)result.AsyncState;
+				var enc = new System.Text.UTF8Encoding(false, false);
 
-				//write form data.
-				StringBuilder builder = new StringBuilder();
-				//write form contents
-				if (post.FormData != null)
+				using (var stream = post.Request.EndGetRequestStream(result))
 				{
-					string template = "\r\n--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}";
+					//write file content
+					var file = enumerator.Current;
+					using (var reader = file.OpenRead())
+						WriteFileContentRange(stream, reader, post.Boundary); //use the GuiD fileId as the filename. server-side will concatenate this file. 
 
-					foreach (var field in post.FormData)
-						builder.AppendFormat(template, post.Boundary, field.Key, field.Value);
+					//write form data.
+					StringBuilder builder = new StringBuilder();
+					//write form contents
+					if (post.FormData != null)
+					{
+						string template = "\r\n--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}";
+
+						foreach (var field in post.FormData)
+							builder.AppendFormat(template, post.Boundary, field.Key, field.Value);
+					}
+
+					builder.AppendFormat("\r\n--{0}--\r\n", post.Boundary);
+					byte[] temp = enc.GetBytes(builder.ToString());
+					stream.Write(temp, 0, temp.Length);
 				}
 
-				builder.AppendFormat("\r\n--{0}--\r\n", post.Boundary);
-				byte[] temp = enc.GetBytes(builder.ToString());
-				stream.Write(temp, 0, temp.Length);
+				//wait for the response.
+				post.Request.BeginGetResponse(ReceiveResponseCallback, post);
 			}
-
-			//wait for the response.
-			post.Request.BeginGetResponse(ReceiveResponseCallback, post);
+			catch (Exception ex)
+			{
+				OnUploadCompleted(false, ex.Message);
+			}
 		}
 		private void ReceiveResponseCallback(IAsyncResult result)
 		{
-			var post = (PostRequestInfo)result.AsyncState;
-			HttpWebResponse response = (HttpWebResponse)post.Request.EndGetResponse(result);
-
-			string responseText = null;
-			var enc = new UTF8Encoding(false, false);
-			using (var stream = response.GetResponseStream())
+			try
 			{
-				using (var reader = new StreamReader(stream, enc))
-					responseText = reader.ReadToEnd();
-			}
+				var post = (PostRequestInfo)result.AsyncState;
+				HttpWebResponse response = (HttpWebResponse)post.Request.EndGetResponse(result);
 
-			JsonResponse json = null;
-			if (!string.IsNullOrEmpty(responseText))
-			{
-				using (MemoryStream ms = new MemoryStream(enc.GetBytes(responseText)))
+				string responseText = null;
+				var enc = new UTF8Encoding(false, false);
+				using (var stream = response.GetResponseStream())
 				{
-					var js = new DataContractJsonSerializer(typeof(JsonResponse));
-					json = js.ReadObject(ms) as JsonResponse;
+					using (var reader = new StreamReader(stream, enc))
+						responseText = reader.ReadToEnd();
 				}
-			}
 
-			if (json != null && json.Success)
-				StartNextChunk();
-			else
-				throw new Exception("Upload failed. - " + json.Message);
+				JsonResponse json = null;
+				if (!string.IsNullOrEmpty(responseText))
+				{
+					using (MemoryStream ms = new MemoryStream(enc.GetBytes(responseText)))
+					{
+						var js = new DataContractJsonSerializer(typeof(JsonResponse));
+						json = js.ReadObject(ms) as JsonResponse;
+					}
+				}
+
+				if (json != null && json.Success)
+					StartNextChunk();
+				else
+					throw new Exception("Upload failed. - " + json.Message);
+			}
+			catch (Exception ex)
+			{
+				OnUploadCompleted(false, ex.Message);
+			}
 		}
 		private void WriteFileContentRange(Stream destination, Stream source, string boundary)
 		{
@@ -230,11 +244,11 @@ namespace SLHttpUploader
 		}
 
 		#region Event Triggers
-		protected void OnUploadCompleted(bool success, Exception error)
+		protected void OnUploadCompleted(bool success, string message)
 		{
 			//all callers are in the UI thread. 
 			if (uploadCompleted != null)
-				this.dispatcher.BeginInvoke(() => uploadCompleted(new UploadCompletedEventArgs() { Error = error, Success = success }));
+				this.dispatcher.BeginInvoke(() => uploadCompleted(new UploadCompletedEventArgs() { Message = message, Success = success }));
 		}
 		protected void OnFileSequenceProgressReport(long current, long total)
 		{

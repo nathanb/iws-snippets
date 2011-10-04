@@ -220,7 +220,7 @@ namespace SLHttpUploader
 			
 			var enc = new System.Text.UTF8Encoding(false, false);
 			string contentTemplate = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"Chunk\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n",
-				boundary, filename, DetermineMimeTypeFromExtension(filename));
+				boundary, filename, DetermineMimeTypeFromExtension(enumerator.Current.Name)); //use original filename.
 
 			byte[] temp = enc.GetBytes(contentTemplate);
 			destination.Write(temp, 0, temp.Length);
@@ -238,9 +238,6 @@ namespace SLHttpUploader
 				destination.Write(buffer, 0, read);
 				currentFilePosition += read;//TODO: may need to add +1 here. 
 			}
-
-			//temp = enc.GetBytes("\r\n");
-			//destination.Write(temp, 0, temp.Length);
 		}
 
 		#region Event Triggers

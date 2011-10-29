@@ -93,7 +93,7 @@ namespace Sample.Web
 					}
 					else
 					{
-						//get a new random int. 
+						//get a new random int.
 						byte[] single = new byte[1];
 						rng.GetBytes(single);
 						rand = single[0];

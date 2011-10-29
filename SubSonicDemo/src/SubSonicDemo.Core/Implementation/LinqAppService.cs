@@ -41,7 +41,7 @@ namespace SubSonicDemo.Core
 
 		public List<Category> GetCategoryByParentAndName(int id, string name)
 		{
-			//this isn't a useful query, but it shows linq using more than one parameter. 
+			//this isn't a useful query, but it shows linq using more than one parameter.
 			return repo.All<Category>().Where(o => o.ParentId == id && o.Name == name).ToList();
 		}
 

@@ -18,15 +18,15 @@ namespace UploaderSL.Web.Services
 			UploadResponse resp = new UploadResponse();
 			try
 			{
-				//you could validate credentials here. 
+				//you could validate credentials here.
 				//request.Credentials
 
-				UploadProcessor proc = new UploadProcessor(); //sets up destination and initializes the file. 
+				UploadProcessor proc = new UploadProcessor(); //sets up destination and initializes the file.
 
 				if (proc.ProcessChunk(request.Chunk, request.Hash))
 				{
 					resp.Token = proc.Token;
-					resp.Status = Enums.ResponsStatus.Success; //continue uploading. 
+					resp.Status = Enums.ResponsStatus.Success; //continue uploading.
 				}
 				else
 				{

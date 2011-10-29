@@ -33,9 +33,9 @@
     void ProcessTemplate(string templateFileName, string outputFileName)
     {
         string templateDirectory = Path.GetDirectoryName(Host.TemplateFile);
-        
-        string outputFilePath = Path.Combine(templateDirectory, outputFileName);   
-	    
+
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+
 
         string template = File.ReadAllText(Host.ResolvePath(templateFileName));
         string output = __engine.ProcessTemplate(template, Host);
@@ -50,9 +50,9 @@
     void SaveOutput(string outputFileName)
     {
         string templateDirectory = Path.GetDirectoryName(Host.TemplateFile);
-        
-        string outputFilePath = Path.Combine(templateDirectory, outputFileName);   
-	    
+
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+
 
         File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString());
         this.GenerationEnvironment = new StringBuilder();
@@ -86,7 +86,7 @@
             throw new Exception("Unexpected error calling IVsProject.GetItemContext");
         if (itemContext == null)
             throw new Exception("IVsProject.GetItemContext returned null");
-    
+
         ServiceProvider itemContextService = new ServiceProvider(itemContext);
         EnvDTE.ProjectItem templateItem = (EnvDTE.ProjectItem)itemContextService.GetService(typeof(EnvDTE.ProjectItem));
         Debug.Assert(templateItem != null, "itemContextService.GetService returned null");
@@ -117,15 +117,15 @@
 
     static IVsProject __dteProjectToVsProject(EnvDTE.Project project)
     {
-        if (project == null) 
+        if (project == null)
             throw new ArgumentNullException("project");
-            
-        string projectGuid = null;        
 
-        // DTE does not expose the project GUId that exists at in the msbuild project file.        
-        // Cannot use MSBuild object model because it uses a static instance of the Engine,         
-        // and using the Project will cause it to be unloaded from the engine when the         
-        // GC collects the variable that we declare.       
+        string projectGuid = null;
+
+        // DTE does not expose the project GUId that exists at in the msbuild project file.
+        // Cannot use MSBuild object model because it uses a static instance of the Engine,
+        // and using the Project will cause it to be unloaded from the engine when the
+        // GC collects the variable that we declare.
         using (XmlReader projectReader = XmlReader.Create(project.FileName))
         {
             projectReader.MoveToContent();
@@ -134,7 +134,7 @@
             {
                 if (Object.Equals(projectReader.LocalName, nodeName))
                 {
-                    projectGuid = (string)projectReader.ReadElementContentAsString(); 
+                    projectGuid = (string)projectReader.ReadElementContentAsString();
                     break;
                 }
             }
@@ -142,11 +142,11 @@
         if (string.IsNullOrEmpty(projectGuid))
             throw new Exception("Unable to find ProjectGuid element in the project file");
 
-        Microsoft.VisualStudio.OLE.Interop.IServiceProvider dteServiceProvider = 
+        Microsoft.VisualStudio.OLE.Interop.IServiceProvider dteServiceProvider =
             (Microsoft.VisualStudio.OLE.Interop.IServiceProvider)project.DTE;
-        IServiceProvider serviceProvider = new ServiceProvider(dteServiceProvider); 
+        IServiceProvider serviceProvider = new ServiceProvider(dteServiceProvider);
         IVsHierarchy vsHierarchy = VsShellUtilities.GetHierarchy(serviceProvider, new Guid(projectGuid));
-            
+
         IVsProject vsProject = (IVsProject)vsHierarchy;
         if (vsProject == null)
             throw new ArgumentException("Project is not a VS project.");

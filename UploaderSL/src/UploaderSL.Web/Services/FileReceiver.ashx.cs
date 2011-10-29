@@ -44,7 +44,7 @@ namespace UploaderSL.Web.Services
 					response.Status = Enums.ResponsStatus.Fail;
 					response.Message = "Internal server error. \n\n" + ex.ToString() ;
 
-					//log the message. 
+					//log the message.
 				}
 			}
 
@@ -77,7 +77,7 @@ namespace UploaderSL.Web.Services
 				resp.Status = Enums.ResponsStatus.FailFullHashCheck;
 				resp.Message = "Failed wrap-up procress.";
 			}
-			
+
 			return resp;
 		}
 

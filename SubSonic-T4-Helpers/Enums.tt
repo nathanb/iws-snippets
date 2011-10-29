@@ -17,7 +17,7 @@ namespace <#=EnumNamespace #>
 	foreach (KeyValuePair<string, List<EnumValue>> pair in list)
 	{
 #>
-    
+
 	/// <summary>
 	/// An enumeration that represents the table <#= pair.Key #> in database: <#= DatabaseName #>
 	/// </summary>
@@ -31,13 +31,13 @@ namespace <#=EnumNamespace #>
 		/// <summary>
 		/// <#= value.Description #>
 		/// </summary>
-<#	 		} 
+<#	 		}
 #>		<#= value.Name #> = <#= value.Value #><#if (counter < pair.Value.Count) {#>,<#}#>
 
 <#		}
 #>
 	}
-				
+
 <#	}
 #>
 }

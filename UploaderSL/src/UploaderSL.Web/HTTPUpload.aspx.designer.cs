@@ -9,10 +9,10 @@
 //------------------------------------------------------------------------------
 
 namespace UploaderSL.Web {
-    
-    
+
+
     public partial class HTTPUpload {
-        
+
         /// <summary>
         /// form1 control.
         /// </summary>

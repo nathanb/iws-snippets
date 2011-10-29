@@ -16,7 +16,7 @@ namespace SubSonicDemo.Specs
 		Establish context = () =>
 		{
 			service = MockRepository.GenerateMock<Core.AppService>();
-			service.Stub(o => o.GetAllCategories()).Return(new List<Core.Category>() { 
+			service.Stub(o => o.GetAllCategories()).Return(new List<Core.Category>() {
 				new Core.Category() { Name="test1", Id=1},
 				new Core.Category() { Name="test2", Id=2}
 			});

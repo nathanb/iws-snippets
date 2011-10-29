@@ -46,7 +46,7 @@ count=${#PACKAGES[@]}
 index=0
 while [ "$index" -lt "$count" ]
 do
-	#only download it if you don't already have it. 
+	#only download it if you don't already have it.
 	if [ ! -f "${PACKAGES[$index]}.tar" ]
 	then
 		wget "${URLS[@]:$index:1}"
@@ -59,7 +59,7 @@ do
 	then
 		tar -xvf "${PACKAGES[$index]}.tar"
 	fi
-	
+
 	let "index = $index + 1"
 done
 
@@ -73,7 +73,7 @@ do
 	cd $BUILDDIR/$i
 	./configure --prefix=$PREFIX
 	make
-	
+
 	if [ "$i" = ${PACKAGES[0]} ]
 	then
 		sudo make install

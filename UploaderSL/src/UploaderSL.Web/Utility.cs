@@ -46,7 +46,7 @@ namespace UploaderSL.Web
 					}
 					else
 					{
-						//get a new random int. 
+						//get a new random int.
 						byte[] single = new byte[1];
 						rng.GetBytes(single);
 						rand = single[0];
@@ -159,7 +159,7 @@ namespace UploaderSL.Web
 		}
 
 		/// <summary>
-		/// Serialize an object to an xml string with specified encoding. 
+		/// Serialize an object to an xml string with specified encoding.
 		/// </summary>
 		/// <param name="instance"></param>
 		/// <param name="encoding"></param>
@@ -207,7 +207,7 @@ namespace UploaderSL.Web
 		}
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="xml"></param>
 		/// <returns></returns>

@@ -11,7 +11,7 @@ namespace SubSonicDemo.Core
 		AppService service;
 
 		//setup only one constructor containing the interfaces you want to use. Unity will inject a resolved version of AppService into the parameter value where
-		// you can take that and store it off at member level for future use within the object. 
+		// you can take that and store it off at member level for future use within the object.
 		public DemoController(AppService svc)
 		{
 			this.service = svc;
@@ -29,7 +29,7 @@ namespace SubSonicDemo.Core
 
 				foreach (var item in list)
 				{
-					service.DeleteCategory(item.Id); //there is also a deleteMany option in SubSonic that can be used instead for better performance onbulk deletes. 
+					service.DeleteCategory(item.Id); //there is also a deleteMany option in SubSonic that can be used instead for better performance onbulk deletes.
 				}
 			}
 
@@ -39,7 +39,7 @@ namespace SubSonicDemo.Core
 
 			Console.WriteLine("Updating it");
 			data.Name += " 2"; //changing data.
-			service.SaveCategory(data); //updating 
+			service.SaveCategory(data); //updating
 
 			Console.WriteLine("Reselecting the first one");
 			var first = service.GetAllCategories().FirstOrDefault(); //get one

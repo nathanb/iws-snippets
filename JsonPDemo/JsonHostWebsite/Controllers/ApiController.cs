@@ -13,10 +13,10 @@ namespace JsonHostWebsite.Controllers
 			return View();
 		}
 		/// <summary>
-		/// Get some basic information with a JSONP GET request. 
+		/// Get some basic information with a JSONP GET request.
 		/// </summary>
 		/// <remarks>
-		///	Sample url: 
+		///	Sample url:
 		///	http://localhost:50211/Api/GetInformation?key=test&callback=json123123
 		/// </remarks>
 		/// <param name="key"></param>
@@ -38,7 +38,7 @@ namespace JsonHostWebsite.Controllers
 
 		bool validateKey(string key)
 		{
-			return true; 
+			return true;
 		}
 	}
 }

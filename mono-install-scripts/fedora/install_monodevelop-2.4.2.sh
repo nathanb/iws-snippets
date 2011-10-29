@@ -50,7 +50,7 @@ count=${#PACKAGES[@]}
 index=0
 while [ "$index" -lt "$count" ]
 do
-	#only download it if you don't already have it. 
+	#only download it if you don't already have it.
 	if [ ! -f "${PACKAGES[$index]}.tar" ]
 	then
 		wget "${URLS[@]:$index:1}"
@@ -63,7 +63,7 @@ do
 	then
 		tar -xvf "${PACKAGES[$index]}.tar"
 	fi
-	
+
 	let "index = $index + 1"
 done
 
@@ -90,7 +90,7 @@ do
 	cd $BUILDDIR/$i
 	./configure --prefix=$PREFIX
 
-#	need to comment out a few lines in gnome-sharp due to a test bug. 
+#	need to comment out a few lines in gnome-sharp due to a test bug.
 	if [ $i == "gnome-sharp-2.24.1" ]
 	then
 		mono $COMMENTEXE -f:$BUILDDIR/$i/sample/gnomevfs/Makefile -l:221,449,450

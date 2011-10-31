@@ -51,7 +51,7 @@ do
 	cd $BUILDDIR/$i
 	./autogen.sh --prefix=$PREFIX
 	make
-	
+
 	if [ "$i" = ${PROJECTS[0]} ]
 	then
 		sudo make install

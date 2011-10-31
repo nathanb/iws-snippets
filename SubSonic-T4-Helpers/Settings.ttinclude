@@ -22,7 +22,7 @@
     const string Namespace = "DefaultNamespaceForDomainObjects";
     const string EnumNamespace = "DefaultNamespaceForEnumerations";
     const string ConnectionStringName = "ConnectionStringName";
-    
+
     //This is the name of your database and is used in naming
     //the repository. By default we set it to the connection string name
     const string DatabaseName = "DatabaseName";
@@ -34,22 +34,22 @@
     "sysdiagrams",
     "BuildVersion",
     };
-	
+
     string[] enumTables = null;
 
 
     string CleanUp(string tableName){
 	    string result=tableName;
-    	
+
 	    //strip blanks
 		result = Inflector.ToTitleCase(tableName);
 	    result=result.Replace(" ","");
-    	
+
 	    //put your logic here...
-    	
+
 	    return result;
     }
-    
+
 	Dictionary<string,List<EnumValue>> GetEnums()
 	{
 		var result = new Dictionary<string,List<EnumValue>>();
@@ -68,13 +68,13 @@
 		}
 		return result;
 	}
-	
+
 	public class EnumValue {
 		public string Name;
 		public string Value;
 		public string Description;
 	}
-	
+
     string CheckNullable(Column col){
         string result="";
         if(col.IsNullable && col.SysType !="byte[]" && col.SysType !="string")
@@ -83,15 +83,15 @@
     }
     string GetConnectionString(string connectionStringName){
         var _CurrentProject = GetCurrentProject();
-        
+
         string result="";
         ExeConfigurationFileMap configFile = new ExeConfigurationFileMap();
         configFile.ExeConfigFilename = GetConfigPath();
 
         if (string.IsNullOrEmpty(configFile.ExeConfigFilename))
             throw new ArgumentNullException("The project does not contain App.config or Web.config file.");
-        
-        
+
+
         var config = System.Configuration.ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
         var connSection=config.ConnectionStrings;
 
@@ -101,7 +101,7 @@
         if(string.IsNullOrEmpty(connectionStringName)){
             if(connSection.ConnectionStrings.Count>1){
                 result=connSection.ConnectionStrings[connSection.ConnectionStrings.Count-1].ConnectionString;
-            }            
+            }
         }else{
             try{
                 result=connSection.ConnectionStrings[connectionStringName].ConnectionString;
@@ -109,7 +109,7 @@
                 result="There is no connection string name called '"+connectionStringName+"'";
             }
         }
-        
+
         return result;
     }
 
@@ -117,50 +117,50 @@
     public string ConnectionString{
 	    get {
 	        if(String.IsNullOrEmpty(_connectionString)){
-                
+
                 _connectionString=GetConnectionString(ConnectionStringName);
-		        
+
 	        }
-    	        
+
 	        if(_connectionString.Contains("|DataDirectory|")){
 	            //have to replace it
 	            string dataFilePath=GetDataDirectory();
 	            _connectionString=_connectionString.Replace("|DataDirectory|",dataFilePath);
-	        }    
-    	        
+	        }
+
 	        return _connectionString;
 	    }
     }
 
     public EnvDTE.Project GetCurrentProject()  {
-  
+
         IServiceProvider _ServiceProvider = (IServiceProvider)Host;
         if (_ServiceProvider == null)
             throw new Exception("Host property returned unexpected value (null)");
-		
+
         EnvDTE.DTE dte = (EnvDTE.DTE)_ServiceProvider.GetService(typeof(EnvDTE.DTE));
         if (dte == null)
             throw new Exception("Unable to retrieve EnvDTE.DTE");
-		
+
         Array activeSolutionProjects = (Array)dte.ActiveSolutionProjects;
         if (activeSolutionProjects == null)
             throw new Exception("DTE.ActiveSolutionProjects returned null");
-		
+
         EnvDTE.Project dteProject = (EnvDTE.Project)activeSolutionProjects.GetValue(0);
         if (dteProject == null)
             throw new Exception("DTE.ActiveSolutionProjects[0] returned null");
-		
+
         return dteProject;
 
     }
-    
+
     private string GetProjectPath()
     {
         EnvDTE.Project project = GetCurrentProject();
         System.IO.FileInfo info = new System.IO.FileInfo(project.FullName);
         return info.Directory.FullName;
 	}
-    
+
     private string GetConfigPath()
     {
         EnvDTE.Project project = GetCurrentProject();
@@ -172,14 +172,14 @@
         }
         return String.Empty;
     }
-    
+
     public string GetDataDirectory(){
         EnvDTE.Project project=GetCurrentProject();
         return System.IO.Path.GetDirectoryName(project.FileName)+"\\App_Data\\";
     }
 
     public class Table{
-   
+
         public List<Column> Columns;
         public List<FKTable> FKTables;
         public string Name;
@@ -188,7 +188,7 @@
         public string PrimaryKey;
         public string Schema;
         public string QueryableName;
-        
+
         public bool HasLogicalDelete(){
             return this.Columns.Any(x=>x.Name.ToLower()=="deleted" || x.Name.ToLower()=="isdeleted");
         }
@@ -243,7 +243,7 @@
         public string OtherClass;
         public string OtherQueryable;
     }
-    
+
     public class SP{
         public string Name;
         public string CleanName;
@@ -251,7 +251,7 @@
         public List<SPParam> Parameters;
         public SP(){
             Parameters=new List<SPParam>();
-        }        
+        }
         public string ArgList{
             get{
                 StringBuilder sb=new StringBuilder();
@@ -272,17 +272,17 @@
         public string SysType;
         public string DbType;
     }
-    
+
 
 /*
  * SubSonic - http://subsonicproject.com
- * 
+ *
  * The contents of this file are subject to the New BSD
  * License (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of
  * the License at http://www.opensource.org/licenses/bsd-license.php
- * 
- * Software distributed under the License is distributed on an 
+ *
+ * Software distributed under the License is distributed on an
  * "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
  * implied. See the License for the specific language governing
  * rights and limitations under the License.
@@ -540,12 +540,12 @@
         /// </summary>
         private class InflectorRule {
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public readonly Regex regex;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public readonly string replacement;
 

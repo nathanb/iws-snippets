@@ -40,7 +40,7 @@ namespace Uploader.Client
 		{
 			try
 			{
-				//send first chunk, start upload. 
+				//send first chunk, start upload.
 
 				FileReceiver.FileReceiverClient client = new Uploader.Client.FileReceiver.FileReceiverClient();
 				client.Endpoint.Address = new System.ServiceModel.EndpointAddress(Utility.BaseUrl + "Services/FileReceiver.svc");
@@ -48,10 +48,10 @@ namespace Uploader.Client
 				FileReceiver.ChunkUploadRequest req = new Uploader.Client.FileReceiver.ChunkUploadRequest();
 				using (FileStream fs = this.File.OpenRead())
 				{
-					//get full hash first. 
+					//get full hash first.
 					this.FileLength = fs.Length;
 
-					//setup progress bar. 
+					//setup progress bar.
 					this.Steps = (int)(this.FileLength / (long)Utility.chunkSize);
 					this.uxProgress.Minimum = 0;
 					this.uxProgress.Maximum = this.Steps;
@@ -77,7 +77,7 @@ namespace Uploader.Client
 			}
 			catch (Exception ex)
 			{
-				//show error. 
+				//show error.
 				this.uxText.Text = ex.Message;
 			}
 		}
@@ -117,7 +117,7 @@ namespace Uploader.Client
 			}
 			catch (Exception ex)
 			{
-				//show error. 
+				//show error.
 				this.uxText.Text = ex.Message;
 			}
 		}
@@ -134,7 +134,7 @@ namespace Uploader.Client
 						SendNextChunk(e.Result.Token);
 					else
 					{
-						//done.. 
+						//done..
 						FinishUpload(e.Result.Token);
 					}
 				}
@@ -160,7 +160,7 @@ namespace Uploader.Client
 						SendNextChunk(e.Result.Token);
 					else
 					{
-						//finish upload. 
+						//finish upload.
 						FinishUpload(e.Result.Token);
 					}
 				}

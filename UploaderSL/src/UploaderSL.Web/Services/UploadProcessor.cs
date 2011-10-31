@@ -21,7 +21,7 @@ namespace UploaderSL.Web.Services
 			if (!Directory.Exists(folder))
 				Directory.CreateDirectory(folder);
 
-			//get a unique name. 
+			//get a unique name.
 			this.Token = Guid.NewGuid();
 			this.Filename = Path.Combine(folder, this.Token.ToString());
 
@@ -34,13 +34,13 @@ namespace UploaderSL.Web.Services
 			this.Token = token;
 			string folder = HostingEnvironment.MapPath(Config.StorageFolder);
 
-			//get a unique name. 
+			//get a unique name.
 			this.Filename = Path.Combine(folder, this.Token.ToString());
 		}
 
 		public bool ProcessChunk(byte[] chunk, string hash)
 		{
-			//compare chunk hash. 
+			//compare chunk hash.
 			if (hash == Utility.GetHashSHA256(chunk))
 			{
 				using (FileStream fs = File.Open(this.Filename, FileMode.OpenOrCreate, FileAccess.ReadWrite))
@@ -69,7 +69,7 @@ namespace UploaderSL.Web.Services
 
 			if (hash == newHash)
 			{
-				//rename file add extension. 
+				//rename file add extension.
 				string newFilename = Utility.GetRandomString(8) + extension;
 				File.Move(this.Filename, Path.Combine(Path.GetDirectoryName(this.Filename), newFilename));
 				this.Filename = newFilename;

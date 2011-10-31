@@ -118,7 +118,7 @@ namespace SLHttpUploader
 				}
 				else
 				{
-					//should be totally done.  Fire an event to inform the front end that the upload is complete. 
+					//should be totally done.  Fire an event to inform the front end that the upload is complete.
 					OnFileSequenceProgressReport(1, 1);
 					OnUploadCompleted(true, null);
 				}
@@ -145,7 +145,7 @@ namespace SLHttpUploader
 				{
 					//test.Write(buffer, 0, read);
 					destination.Write(buffer, 0, read);
-					destination.Flush(); //blocks thread until sent. 
+					destination.Flush(); //blocks thread until sent.
 					totalWritten += read;
 				}
 			}
@@ -163,7 +163,7 @@ namespace SLHttpUploader
 			{
 				using (var stream = post.Request.EndGetRequestStream(result))
 				{
-					//based on behavior, would write multiple files or each file individually here. 
+					//based on behavior, would write multiple files or each file individually here.
 					int counter = 0;
 					foreach (var file in post.Files)
 					{
@@ -234,14 +234,14 @@ namespace SLHttpUploader
 
 		protected void OnUploadCompleted(bool success, string message)
 		{
-			//all callers are in the UI thread. 
+			//all callers are in the UI thread.
 			if (uploadCompleted != null)
 				uploadCompleted(new UploadCompletedEventArgs() { Message = message, Success = success });
 		}
 		protected void OnFileSequenceProgressReport(long current, long total)
 		{
-			//consider skipping a number of calls for performance.  We don't ned to report b ack to the UI every chunk uploaded. 
-			//The caller is in the request thread. 
+			//consider skipping a number of calls for performance.  We don't ned to report b ack to the UI every chunk uploaded.
+			//The caller is in the request thread.
 			Action<long, long> action = (c, t) =>
 			{
 				var arg = new ProgressReportEventArgs() { Current = c, Total = t };
@@ -259,8 +259,8 @@ namespace SLHttpUploader
 
 		protected void OnFileContentProgressReport(long current, long total)
 		{
-			//consider skipping a number of calls for performance.  We don't ned to report b ack to the UI every chunk uploaded. 
-			//The caller is in the request thread. 
+			//consider skipping a number of calls for performance.  We don't ned to report b ack to the UI every chunk uploaded.
+			//The caller is in the request thread.
 			Action<long, long> action = (c, t) =>
 			{
 				var arg = new ProgressReportEventArgs() { Current = c, Total = t };

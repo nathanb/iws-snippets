@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
-	
+
 	<script type="text/C#" runat="server">
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -35,8 +35,8 @@
 		}
 
 	</script>
-	
-	
+
+
 	<link href="smoothness/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" />
 	<script src="https://www.google.com/jsapi?key=" type="text/javascript"></script>
 	<script type="text/javascript">
@@ -64,11 +64,11 @@
 				});
 
 				$('#dialogContent').dialog('open');
-			
+
 			return false;
 		}
 
-		
+
 	</script>
 </head>
 <body>

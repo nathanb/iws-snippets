@@ -86,7 +86,7 @@ namespace Uploader.ClientHttp
 
 			if (_CurrentWriteLength != Utility.chunkSize && _CurrentWriteLength > 0)
 			{
-				//resize buffer  to read size. 
+				//resize buffer  to read size.
 				byte[] new_buffer = new byte[_CurrentWriteLength];
 				for (int ix = 0; ix < _CurrentWriteLength; ix++)
 				{
@@ -106,17 +106,17 @@ namespace Uploader.ClientHttp
 		}
 		void FinishUpload()
 		{
-			//send the finish request. 
+			//send the finish request.
 			FinishRequest req = new FinishRequest();
 			req.Extension = Path.GetExtension(_File.Name);
 
-			//reset filestream for full hash. 
+			//reset filestream for full hash.
 			if (_FileStream != null)
 				_FileStream.Seek(0, SeekOrigin.Begin);
 
 			req.FullHash = Utility.GetSHA256Hash(_FileStream);
 
-			//close filestream. 
+			//close filestream.
 			_FileStream.Dispose();
 			req.Token = this.Token;
 
@@ -124,7 +124,7 @@ namespace Uploader.ClientHttp
 			this.BeginSendRequest();
 		}
 
-		//http stuff. 
+		//http stuff.
 		void BeginSendRequest()
 		{
 			WebRequest req = HttpWebRequest.Create(this.Uri);
@@ -196,13 +196,13 @@ namespace Uploader.ClientHttp
 			{
 				if (resp.Status == Enums.ResponsStatus.Success)
 				{
-					this.FilePosition += _CurrentWriteLength; //indicates that the last chunk was success. 
+					this.FilePosition += _CurrentWriteLength; //indicates that the last chunk was success.
 					this.Token = resp.Token;
 					_RetryCount = 0;
 					this.CurrentStep++;
 					OnProgressChanged();
 
-					if (this.FilePosition >= this.FileLength)//done... call finish. 
+					if (this.FilePosition >= this.FileLength)//done... call finish.
 						FinishUpload();
 					else
 						SendNextChunk();

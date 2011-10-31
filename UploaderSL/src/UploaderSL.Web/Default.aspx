@@ -9,7 +9,7 @@
             if (sender != null && sender != 0) {
               appSource = sender.getHost().Source;
             }
-            
+
             var errorType = args.ErrorType;
             var iErrorCode = args.ErrorCode;
 
@@ -28,7 +28,7 @@
                 errMsg += "Line: " + args.lineNumber + "     \n";
                 errMsg += "Position: " + args.charPosition + "     \n";
             }
-            else if (errorType == "RuntimeError") {           
+            else if (errorType == "RuntimeError") {
                 if (args.lineNumber != 0) {
                     errMsg += "Line: " + args.lineNumber + "     \n";
                     errMsg += "Position: " +  args.charPosition + "     \n";

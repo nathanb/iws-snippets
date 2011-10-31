@@ -1,1 +1,1 @@
-This version of the mysql provider has been slightly modified to prevent exceptions being thrown upon detecting Mono runtime when using hashed passwords. 
+This version of the mysql provider has been slightly modified to prevent exceptions being thrown upon detecting Mono runtime when using hashed passwords.

@@ -5,7 +5,7 @@
 
 // Silverlight control instance counter for memory mgt
 Silverlight._silverlightCount = 0;
-Silverlight.fwlinkRoot='http://go2.microsoft.com/fwlink/?LinkID=';  
+Silverlight.fwlinkRoot='http://go2.microsoft.com/fwlink/?LinkID=';
 Silverlight.onGetSilverlight = null;
 Silverlight.onSilverlightInstalled = function () {window.location.reload(false);};
 
@@ -16,11 +16,11 @@ Silverlight.isInstalled = function(version)
 {
     var isVersionSupported=false;
     var container = null;
-    
-    try 
+
+    try
     {
         var control = null;
-        
+
         try
         {
             control = new ActiveXObject('AgControl.AgControl');
@@ -62,12 +62,12 @@ Silverlight.isInstalled = function(version)
                     {
                         reqVerArray.pop();
                     }
-                    
+
                     var requiredVersionPart ;
                     var actualVersionPart
                     var index = 0;
-                    
-                    
+
+
                     do
                     {
                         requiredVersionPart = parseInt(reqVerArray[index]);
@@ -75,7 +75,7 @@ Silverlight.isInstalled = function(version)
                         index++;
                     }
                     while (index < reqVerArray.length && requiredVersionPart === actualVersionPart);
-                    
+
                     if ( requiredVersionPart <= actualVersionPart && !isNaN(requiredVersionPart) )
                     {
                         isVersionSupported = true;
@@ -84,15 +84,15 @@ Silverlight.isInstalled = function(version)
             }
         }
     }
-    catch (e) 
+    catch (e)
     {
         isVersionSupported = false;
     }
-    if (container) 
+    if (container)
     {
         document.body.removeChild(container);
     }
-    
+
     return isVersionSupported;
 }
 Silverlight.WaitForInstallCompletion = function()
@@ -113,7 +113,7 @@ Silverlight.WaitForInstallCompletion = function()
         else
         {
               setTimeout(Silverlight.WaitForInstallCompletion, 3000);
-        }    
+        }
     }
 }
 Silverlight.__startup = function()
@@ -123,19 +123,19 @@ Silverlight.__startup = function()
     {
         Silverlight.WaitForInstallCompletion();
     }
-    if (window.removeEventListener) { 
+    if (window.removeEventListener) {
        window.removeEventListener('load', Silverlight.__startup , false);
     }
-    else { 
+    else {
         window.detachEvent('onload', Silverlight.__startup );
     }
 }
 
-if (window.addEventListener) 
+if (window.addEventListener)
 {
     window.addEventListener('load', Silverlight.__startup , false);
 }
-else 
+else
 {
     window.attachEvent('onload', Silverlight.__startup );
 }
@@ -158,11 +158,11 @@ Silverlight.createObject = function(source, parentElement, id, properties, event
     var slPluginHelper = new Object();
     var slProperties = properties;
     var slEvents = events;
-    
+
     slPluginHelper.version = slProperties.version;
-    slProperties.source = source;    
+    slProperties.source = source;
     slPluginHelper.alt = slProperties.alt;
-    
+
     //rename properties to their tag property names
     if ( initParams )
         slProperties.initParams = initParams;
@@ -172,7 +172,7 @@ Silverlight.createObject = function(source, parentElement, id, properties, event
         slProperties.maxFramerate = slProperties.framerate;
     if ( id && !slProperties.id)
         slProperties.id = id;
-    
+
     // remove elements which are not to be added to the instantiation tag
     delete slProperties.ignoreBrowserVer;
     delete slProperties.inplaceInstallPrompt;
@@ -213,7 +213,7 @@ Silverlight.createObject = function(source, parentElement, id, properties, event
         slPluginHTML = Silverlight.buildHTML(slProperties);
     }
     //The control could not be instantiated. Show the installation prompt
-    else 
+    else
     {
         slPluginHTML = Silverlight.buildPromptHTML(slPluginHelper);
     }
@@ -253,11 +253,11 @@ Silverlight.buildHTML = function( slProperties)
         htmlBuilder.push(' height="' + slProperties.height + '"');
     }
     htmlBuilder.push(' >');
-    
+
     delete slProperties.id;
     delete slProperties.width;
     delete slProperties.height;
-    
+
     for (var name in slProperties)
     {
         if (slProperties[name])
@@ -305,7 +305,7 @@ Silverlight.buildPromptHTML = function(slPluginHelper)
         slPluginHTML = slPluginHTML.replace('{1}', shortVer );
         slPluginHTML = slPluginHTML.replace('{2}', urlRoot + '108181');
     }
-    
+
     return slPluginHTML;
 }
 
@@ -316,7 +316,7 @@ Silverlight.getSilverlight = function(version)
     {
         Silverlight.onGetSilverlight();
     }
-    
+
     var shortVer = "";
     var reqVerArray = String(version).split(".");
     if (reqVerArray.length > 1)
@@ -331,14 +331,14 @@ Silverlight.getSilverlight = function(version)
             shortVer = reqVerArray[0]+'.'+reqVerArray[1];
         }
     }
-    
+
     var verArg = "";
-    
+
     if (shortVer.match(/^\d+\056\d+$/) )
     {
         verArg = "&v="+shortVer;
     }
-    
+
     Silverlight.followFWLink("114576" + verArg);
 }
 
@@ -374,7 +374,7 @@ Silverlight.HtmlAttributeEncode = function( strInput )
       {
           return null;
     }
-      
+
       for(var cnt = 0; cnt < strInput.length; cnt++)
       {
             c = strInput.charCodeAt(cnt);
@@ -391,7 +391,7 @@ Silverlight.HtmlAttributeEncode = function( strInput )
                   retVal = retVal + '&#' + c + ';';
             }
       }
-      
+
       return retVal;
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -443,10 +443,10 @@ Silverlight.__cleanup = function ()
         window['__slEvent' + i] = null;
     }
     Silverlight._silverlightCount = 0;
-    if (window.removeEventListener) { 
+    if (window.removeEventListener) {
        window.removeEventListener('unload', Silverlight.__cleanup , false);
     }
-    else { 
+    else {
         window.detachEvent('onunload', Silverlight.__cleanup );
     }
 }
@@ -464,18 +464,18 @@ Silverlight.__getHandlerName = function (handler)
     {
         if (Silverlight._silverlightCount == 0)
         {
-            if (window.addEventListener) 
+            if (window.addEventListener)
             {
                 window.addEventListener('onunload', Silverlight.__cleanup , false);
             }
-            else 
+            else
             {
                 window.attachEvent('onunload', Silverlight.__cleanup );
             }
         }
         var count = Silverlight._silverlightCount++;
         handlerName = "__slEvent"+count;
-        
+
         window[handlerName]=handler;
     }
     else

@@ -53,7 +53,7 @@ namespace FixGnomeSharp
 								if (lines.Contains(ix))
 									writer.Write('#');
 
-								writer.Write(line + '\n'); 
+								writer.Write(line + '\n');
 								ix++;
 							}
 						}

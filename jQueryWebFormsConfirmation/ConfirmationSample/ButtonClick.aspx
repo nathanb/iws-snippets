@@ -34,7 +34,7 @@ $(document).ready(function() {
 	$('#<%=this.Button2.ClientID %>').click(function(){
 		$('#dialogContent').dialog('open'); return false;
 	});
-	
+
 	$("#dialogContent").dialog(
 		{ autoOpen: false,
 			modal: true,

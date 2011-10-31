@@ -41,7 +41,7 @@ namespace SLHttpUploader
 				else
 					total = of.Files.Sum(o => o.Length);
 
-				//this amount doesn't consider message overhead size; so really we could probably add 200-300 bytes to the file sizes and compare against that. 
+				//this amount doesn't consider message overhead size; so really we could probably add 200-300 bytes to the file sizes and compare against that.
 				total += 300; //this is just an arbitrary amount; semi-safe guess.
 				total /= 1024; //convert to KB
 

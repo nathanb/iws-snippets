@@ -28,7 +28,7 @@ namespace <#=Namespace #>
 			{
 #>		[SubSonicPrimaryKey]
 <#			}
-		
+
 			var nullableNonString = string.Empty;
 			var nullableString = string.Empty;
 			if (col.IsNullable && col.SysType != "string")

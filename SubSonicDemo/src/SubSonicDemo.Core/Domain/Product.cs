@@ -6,7 +6,7 @@ using SubSonic.SqlGeneration.Schema;
 
 namespace SubSonicDemo.Core
 {
-	//not using table name override. 
+	//not using table name override.
 	public class Product
 	{
 		public int Id { get; set; }

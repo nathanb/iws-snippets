@@ -83,12 +83,12 @@ namespace SLHttpUploader
 		{
 			OnFileSequenceProgressReport(filesTransferred, filesToTransfer);
 
-			//clear from last round. 
-			formData.Remove("Hash");//base64 SHA256 hash of original file. for finish request only. 
+			//clear from last round.
+			formData.Remove("Hash");//base64 SHA256 hash of original file. for finish request only.
 			formData.Remove("Filename"); //only for finish call
 
 			currentFileId = Guid.NewGuid(); //set the new guid for this file.
-			formData["Sequence"] = ChunkSequence.Body.ToString(); // finish == end. 
+			formData["Sequence"] = ChunkSequence.Body.ToString(); // finish == end.
 			currentFilePosition = 0L;
 			sentEndChunk = false; //prep for new file
 
@@ -128,7 +128,7 @@ namespace SLHttpUploader
 
 
 
-		//just write the contents of the stream to the output buffer. 
+		//just write the contents of the stream to the output buffer.
 
 		private void StartRequestForNextChunk()
 		{
@@ -153,7 +153,7 @@ namespace SLHttpUploader
 					//write file content
 					var file = enumerator.Current;
 					using (var reader = file.OpenRead())
-						WriteFileContentRange(stream, reader, post.Boundary); //use the GuiD fileId as the filename. server-side will concatenate this file. 
+						WriteFileContentRange(stream, reader, post.Boundary); //use the GuiD fileId as the filename. server-side will concatenate this file.
 
 					//write form data.
 					StringBuilder builder = new StringBuilder();
@@ -217,7 +217,7 @@ namespace SLHttpUploader
 		private void WriteFileContentRange(Stream destination, Stream source, string boundary)
 		{
 			var filename = currentFileId.ToString();
-			
+
 			var enc = new System.Text.UTF8Encoding(false, false);
 			string contentTemplate = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"Chunk\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n",
 				boundary, filename, DetermineMimeTypeFromExtension(enumerator.Current.Name)); //use original filename.
@@ -236,21 +236,21 @@ namespace SLHttpUploader
 			{
 				//test.Write(buffer, 0, read);
 				destination.Write(buffer, 0, read);
-				currentFilePosition += read;//TODO: may need to add +1 here. 
+				currentFilePosition += read;//TODO: may need to add +1 here.
 			}
 		}
 
 		#region Event Triggers
 		protected void OnUploadCompleted(bool success, string message)
 		{
-			//all callers are in the UI thread. 
+			//all callers are in the UI thread.
 			if (uploadCompleted != null)
 				this.dispatcher.BeginInvoke(() => uploadCompleted(new UploadCompletedEventArgs() { Message = message, Success = success }));
 		}
 		protected void OnFileSequenceProgressReport(long current, long total)
 		{
-			//consider skipping a number of calls for performance.  We don't ned to report b ack to the UI every chunk uploaded. 
-			//The caller is in the request thread. 
+			//consider skipping a number of calls for performance.  We don't ned to report b ack to the UI every chunk uploaded.
+			//The caller is in the request thread.
 			Action<long, long> action = (c, t) =>
 			{
 				var arg = new ProgressReportEventArgs() { Current = c, Total = t };
@@ -267,8 +267,8 @@ namespace SLHttpUploader
 		}
 		protected void OnFileContentProgressReport(long current, long total)
 		{
-			//consider skipping a number of calls for performance.  We don't ned to report b ack to the UI every chunk uploaded. 
-			//The caller is in the request thread. 
+			//consider skipping a number of calls for performance.  We don't ned to report b ack to the UI every chunk uploaded.
+			//The caller is in the request thread.
 			Action<long, long> action = (c, t) =>
 			{
 				var arg = new ProgressReportEventArgs() { Current = c, Total = t };

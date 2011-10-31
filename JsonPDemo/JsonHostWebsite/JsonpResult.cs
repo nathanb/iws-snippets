@@ -93,7 +93,6 @@ namespace System.Web.Mvc
 		{
 			JsonpResult result = new JsonpResult();
 			result.Data = data;
-			result.ExecuteResult(controller.ControllerContext);
 			return result;
 		}
 	}

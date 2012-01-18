@@ -78,7 +78,7 @@ namespace SLHttpUploader
 		void utility_FileContentProgressReport(ProgressReportEventArgs e)
 		{
 			contentProgressCalls++;
-			HtmlPage.Window.Invoke(currentSettings.ScriptContentProgressHandler, e.Percentage);
+			HtmlPage.Window.Invoke(currentSettings.ScriptContentProgressHandler, e.Percentage, e.Message);
 		}
 		void callScriptStartup()
 		{
@@ -87,7 +87,7 @@ namespace SLHttpUploader
 		void utility_FileSequenceProgressReport(ProgressReportEventArgs e)
 		{
 			sequenceProgressCalls++;
-			HtmlPage.Window.Invoke(currentSettings.ScriptSequenceProgressHandler, e.Percentage);
+			HtmlPage.Window.Invoke(currentSettings.ScriptSequenceProgressHandler, e.Percentage, e.Message);
 		}
 
 		void utility_UploadCompleted(UploadCompletedEventArgs e)

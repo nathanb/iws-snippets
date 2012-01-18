@@ -81,8 +81,6 @@ namespace SLHttpUploader
 
 		private void StartNextFile()
 		{
-			OnFileSequenceProgressReport(filesTransferred, filesToTransfer);
-
 			//clear from last round. 
 			formData.Remove("Hash");//base64 SHA256 hash of original file. for finish request only. 
 			formData.Remove("Filename"); //only for finish call
@@ -97,11 +95,13 @@ namespace SLHttpUploader
 
 		private void StartNextChunk()
 		{
-			OnFileContentProgressReport(currentFilePosition, enumerator.Current.Length);
+			OnFileContentProgressReport(currentFilePosition, enumerator.Current.Length, enumerator.Current.Name);
 
 			if (sentEndChunk)
 			{
 				filesTransferred++;
+				OnFileSequenceProgressReport(filesTransferred, filesToTransfer, enumerator.Current.Name);
+
 				if (enumerator.MoveNext())
 					StartNextFile();
 				else
@@ -247,13 +247,13 @@ namespace SLHttpUploader
 			if (uploadCompleted != null)
 				this.dispatcher.BeginInvoke(() => uploadCompleted(new UploadCompletedEventArgs() { Message = message, Success = success }));
 		}
-		protected void OnFileSequenceProgressReport(long current, long total)
+		protected void OnFileSequenceProgressReport(long current, long total, string name)
 		{
 			//consider skipping a number of calls for performance.  We don't ned to report b ack to the UI every chunk uploaded. 
 			//The caller is in the request thread. 
-			Action<long, long> action = (c, t) =>
+			Action<long, long, string> action = (c, t, n) =>
 			{
-				var arg = new ProgressReportEventArgs() { Current = c, Total = t };
+				var arg = new ProgressReportEventArgs() { Current = c, Total = t, Message = n };
 				var perc = arg.Percentage;
 				if (perc == 0 || perc != lastFileSequenceProgressReport)
 				{
@@ -263,15 +263,15 @@ namespace SLHttpUploader
 				}
 			};
 
-			this.dispatcher.BeginInvoke(action, current, total);
+			this.dispatcher.BeginInvoke(action, current, total, name);
 		}
-		protected void OnFileContentProgressReport(long current, long total)
+		protected void OnFileContentProgressReport(long current, long total, string name)
 		{
 			//consider skipping a number of calls for performance.  We don't ned to report b ack to the UI every chunk uploaded. 
 			//The caller is in the request thread. 
-			Action<long, long> action = (c, t) =>
+			Action<long, long, string> action = (c, t, n) =>
 			{
-				var arg = new ProgressReportEventArgs() { Current = c, Total = t };
+				var arg = new ProgressReportEventArgs() { Current = c, Total = t, Message = n };
 				var perc = arg.Percentage;
 				if (perc == 0 || perc != lastFileContentProgressReport)
 				{
@@ -281,7 +281,7 @@ namespace SLHttpUploader
 				}
 			};
 
-			this.dispatcher.BeginInvoke(action, current, total);
+			this.dispatcher.BeginInvoke(action, current, total, name);
 		}
 		#endregion
 

@@ -20,6 +20,7 @@ namespace SLHttpUploader
 	{
 		public long Current { get; set; }
 		public long Total { get; set; }
+		public string Message { get; set; }
 
 		public int Percentage
 		{

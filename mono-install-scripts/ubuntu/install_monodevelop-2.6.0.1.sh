@@ -14,7 +14,7 @@ sudo apt-get update
 sudo apt-get upgrade -y
 
 echo "installing prerequisites"
-sudo apt-get install -y build-essential libc6-dev g++ gcc libglib2.0-dev pkg-config git-core apache2 apache2-threaded-dev bison gettext autoconf automake libtool libpango1.0-dev libatk1.0-dev libgtk2.0-dev libtiff4-dev libgif-dev libglade2-dev gnome-devel libgnomecanvas2-dev libgnomeui-dev xulrunner-1.9.2-dev
+sudo apt-get install -y build-essential libc6-dev g++ gcc libglib2.0-dev pkg-config git-core apache2 apache2-threaded-dev bison gettext autoconf automake libtool libpango1.0-dev libatk1.0-dev libgtk2.0-dev libtiff4-dev libgif-dev libglade2-dev gnome-devel libgnomecanvas2-dev libgnomeui-dev xulrunner-dev
 
 mkdir -p $BUILDDIR
 

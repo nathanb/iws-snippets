@@ -8,12 +8,12 @@
 				}
 			});
 		},
-		sequenceProgress: function (percent) {
-			this.uploader.settings.sequenceProgress(percent);
+		sequenceProgress: function (percent, message) {
+			this.uploader.settings.sequenceProgress(percent, message);
 			return this;
 		},
-		contentProgress: function (percent) {
-			this.uploader.settings.contentProgress(percent);
+		contentProgress: function (percent, message) {
+			this.uploader.settings.contentProgress(percent, message);
 			return this;
 		},
 		complete: function (success, message) {
@@ -23,6 +23,10 @@
 		starting: function () {
 			this.uploader.settings.starting();
 			return this;
+		},
+		option: function (options) {
+			if (options)
+				$.extend($(this).uploader.settings, options);
 		}
 	};
 
@@ -41,58 +45,25 @@
 
 	$.fn.uploader.settings = {
 		'complete': function (success, message) { },
-		'sequenceProgress': function (percent) { },
-		'contentProgress': function (percent) { },
+		'sequenceProgress': function (percent, message) { },
+		'contentProgress': function (percent, message) { },
 		'starting': function () { },
 		'url': 'http://localhost/Test/Upload',
 		'maxSize': 30720,
 		'uploadInividually': true,
-		'callbackCompleted': 'uploadComplete',
-		'callbackSequenceProgress': 'uploadSequenceProgress',
-		'callbackContentProgress': 'uploadContentProgress',
-		'callbackStarting': 'uploadStarting',
+		'callbackCompleted': 'uploader_uploadComplete',
+		'callbackSequenceProgress': 'uploader_uploadSequenceProgress',
+		'callbackContentProgress': 'uploader_uploadContentProgress',
+		'callbackStarting': 'uploader_uploadStarting',
 		'customData': null,
 		'buttonText': 'Select Files',
-		'uploadChunked' : false,
+		'uploadChunked': false,
 		'chunkSize': 0 //default of 200 KB
 	};
 })(jQuery);
 
 
-//default callbacks for this silverlight control
-function uploadSequenceProgress(percent) {
-	$('#SilverlightControl').uploader('sequenceProgress', percent);
-}
-function uploadContentProgress(percent) {
-	$('#SilverlightControl').uploader('contentProgress', percent);
-}
-function uploadComplete(success, message) {
-	$('#SilverlightControl').uploader('complete', success, message);
-}
-function uploadStarting() {
-	$('#SilverlightControl').uploader('starting');
-}
-
-function uploaderOnLoad() {
-	var settings = $('#SilverlightControl').uploader.settings;
-	var raw = document.getElementById("SilverlightControl");
-	raw.content.page.Setup(settings.url, settings.maxSize, settings.uploadInividually, settings.callbackSequenceProgress, settings.callbackContentProgress, settings.callbackCompleted, settings.callbackStarting, serializeCustomData(settings.customData), settings.buttonText, settings.uploadChunked, settings.chunkSize);
-}
-
-function serializeCustomData(data) {
-	var s = '';
-	var ix = 0;
-	for (property in data) {
-		if (ix > 0)
-			s += ';';
-		s += property + ':' + data[property].toString();
-		ix++;
-	}
-	return s;
-}
-
-function onSilverlightError(sender, args) {
-
+function uploader_onSilverlightError (sender, args) {
 	var appSource = "";
 	if (sender != null && sender != 0) {
 		appSource = sender.getHost().Source;
@@ -100,7 +71,7 @@ function onSilverlightError(sender, args) {
 	var errorType = args.ErrorType;
 	var iErrorCode = args.ErrorCode;
 
-	var errMsg = "Unhandled Error in Silverlight 2 Application " + appSource + "\n";
+	var errMsg = "Unhandled Error in Silverlight Application " + appSource + "\n";
 
 	errMsg += "Code: " + iErrorCode + "    \n";
 	errMsg += "Category: " + errorType + "       \n";
@@ -120,4 +91,37 @@ function onSilverlightError(sender, args) {
 	}
 
 	throw new Error(errMsg);
+}
+
+//default callbacks for this silverlight control
+function uploader_uploadSequenceProgress (percent, message) {
+	$('#uploaderControl').uploader('sequenceProgress', percent, message);
+}
+
+function uploader_uploadContentProgress(percent, message) {
+	$('#uploaderControl').uploader('contentProgress', percent, message);
+}
+function uploader_uploadComplete (success, message) {
+	$('#uploaderControl').uploader('complete', success, message);
+}
+function uploader_uploadStarting () {
+	$('#uploaderControl').uploader('starting');
+}
+
+function uploader_initSilverlight() {
+	var settings = $('#uploaderControl').uploader.settings;
+	var raw = document.getElementById("uploaderControl");
+	raw.content.page.Setup(settings.url, settings.maxSize, settings.uploadInividually, settings.callbackSequenceProgress, settings.callbackContentProgress, settings.callbackCompleted, settings.callbackStarting, uploader_serializeCustomData(settings.customData), settings.buttonText, settings.uploadChunked, settings.chunkSize);
+}
+
+function uploader_serializeCustomData (data) {
+	var s = '';
+	var ix = 0;
+	for (property in data) {
+		if (ix > 0)
+			s += ';';
+		s += property + ':' + data[property].toString();
+		ix++;
+	}
+	return s;
 }

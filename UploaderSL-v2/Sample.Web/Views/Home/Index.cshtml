@@ -2,75 +2,98 @@
 	ViewBag.Title = "Index";
 }
 @section Head {
-	<link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />
-	<script src="https://www.google.com/jsapi?key=ABQIAAAAv6RuybEGs1VeQiRDoEpK-hQyMmp_HHdd6FHONjMGZdt4aFnzdBQywgAcibvmbTZe0H04x4fRElITFw" type="text/javascript"></script>
-	<script type="text/javascript">
-		google.load("jquery", "1");
-		google.load("jqueryui", "1.8");
-	</script>
+	<link href="@Url.Content("~/Content/themes/ui-lightness/jquery-ui-1.8.17.custom.css")" rel="stylesheet" type="text/css" />
+	<script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Scripts/jquery-ui-1.8.17.min.js")" type="text/javascript"></script>
 	<script src="@Url.Content("~/Scripts/jquery.uploader.js")" type="text/javascript"></script>
 	<script type="text/javascript" src="@Url.Content("~/Scripts/Silverlight.js")"></script>
 	<script type="text/javascript">
-		$(document).ready(function () {
-			$('#sequenceProgress').progressbar({ value: 0 });
-			$('#contentProgress').progressbar({ value: 0 });
+		(function () {
+			var controlId;
+			controlId = 'SilverlightControl'; /*kinda hacky...sorry! BUT... if you name your silverlight control something else; just change it here. */
 
-			$('#SilverlightControl').uploader({
-				complete: function (success, message) {
-					if (!success)
-						alert(message);
+			$(function () {
+				uploaderControl = $('#' + controlId)
+				$('#sequenceProgress').progressbar({ value: 0 });
+				$('#contentProgress').progressbar({ value: 0 });
 
-					$('#sequenceProgress').progressbar({ value: 0 });
-					$('#contentProgress').progressbar({ value: 0 });
-				},
-				sequenceProgress: function (percent) {
-					$('#sequenceProgress').progressbar({ value: percent });
-				},
-				contentProgress: function (percent) {
-					$('#contentProgress').progressbar({ value: percent });
-				},
-				url: 'Home/UploadChunked',
-				maxSize: 51200, //51200, 50MB
-				uploadInividually: true,
-				uploadChunked: true,
-				chunkSize: 512000
+				uploaderControl.uploader({
+					complete: function (success, message) {
+						if (!success)
+							alert(message);
+
+						$('#sequenceProgress').progressbar({ value: 0 });
+						$('#contentProgress').progressbar({ value: 0 });
+					},
+					sequenceProgress: function (percent) {
+						$('#sequenceProgress').progressbar({ value: percent });
+					},
+					contentProgress: function (percent) {
+						$('#contentProgress').progressbar({ value: percent });
+					},
+					url: 'Home/UploadChunked', /*change to Home/Upload for the non-chunked version.*/
+					maxSize: 51200, //51200 KB, 50 MB (client-side validation soft-check before uploading in kilobytes). 
+					uploadInividually: true, /*uploads all files in one request (when not chunking). requires larger max request size limits*/
+					uploadChunked: true, /*enables upload progress per file; set to false to upload the entire file at once. . */
+					buttonText: 'Select Files',
+					chunkSize: 512000 /*chunk size in bytes*/
+				});
 			});
-		});
 
-		function onSilverlightError(sender, args) {
-			var appSource = "";
-			if (sender != null && sender != 0) {
-				appSource = sender.getHost().Source;
+
+			//default callbacks for the the uploader. 
+			window.uploader_uploadSequenceProgress = function (percent, message) {
+				$('#' + controlId).uploader('sequenceProgress', percent, message);
 			}
 
-			var errorType = args.ErrorType;
-			var iErrorCode = args.ErrorCode;
-
-			if (errorType == "ImageError" || errorType == "MediaError") {
-				return;
+			window.uploader_uploadContentProgress = function (percent, message) {
+				$('#' + controlId).uploader('contentProgress', percent, message);
+			}
+			window.uploader_uploadComplete = function (success, message) {
+				$('#' + controlId).uploader('complete', success, message);
+			}
+			window.uploader_uploadStarting = function () {
+				$('#' + controlId).uploader('starting');
 			}
 
-			var errMsg = "Unhandled Error in Silverlight Application " + appSource + "\n";
-
-			errMsg += "Code: " + iErrorCode + "    \n";
-			errMsg += "Category: " + errorType + "       \n";
-			errMsg += "Message: " + args.ErrorMessage + "     \n";
-
-			if (errorType == "ParserError") {
-				errMsg += "File: " + args.xamlFile + "     \n";
-				errMsg += "Line: " + args.lineNumber + "     \n";
-				errMsg += "Position: " + args.charPosition + "     \n";
+			window.uploader_initSilverlight = function () {
+				var uploaderControl = $('#' + controlId);
+				var settings = uploaderControl.uploader.settings;
+				var raw = document.getElementById(controlId);
+				var serializedCustomData = uploaderControl.uploader('serializeCustomData');
+				raw.content.page.Setup(settings.url, settings.maxSize, settings.uploadInividually, settings.callbackSequenceProgress, settings.callbackContentProgress, settings.callbackCompleted, settings.callbackStarting, serializedCustomData, settings.buttonText, settings.uploadChunked, settings.chunkSize);
 			}
-			else if (errorType == "RuntimeError") {
-				if (args.lineNumber != 0) {
+
+			window.uploader_onSilverlightError = function (sender, args) {
+				var appSource = "";
+				if (sender != null && sender != 0) {
+					appSource = sender.getHost().Source;
+				}
+				var errorType = args.ErrorType;
+				var iErrorCode = args.ErrorCode;
+
+				var errMsg = "Unhandled Error in Silverlight Application " + appSource + "\n";
+
+				errMsg += "Code: " + iErrorCode + "    \n";
+				errMsg += "Category: " + errorType + "       \n";
+				errMsg += "Message: " + args.ErrorMessage + "     \n";
+
+				if (errorType == "ParserError") {
+					errMsg += "File: " + args.xamlFile + "     \n";
 					errMsg += "Line: " + args.lineNumber + "     \n";
 					errMsg += "Position: " + args.charPosition + "     \n";
 				}
-				errMsg += "MethodName: " + args.methodName + "     \n";
-			}
+				else if (errorType == "RuntimeError") {
+					if (args.lineNumber != 0) {
+						errMsg += "Line: " + args.lineNumber + "     \n";
+						errMsg += "Position: " + args.charPosition + "     \n";
+					}
+					errMsg += "MethodName: " + args.methodName + "     \n";
+				}
 
-			throw new Error(errMsg);
-		}
+				throw new Error(errMsg);
+			}
+		}).call(this);
 	</script>
 }
 <h2>Index</h2>
@@ -79,9 +102,9 @@
 <div id="silverlightControlHost">
 	<object id="SilverlightControl" data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="200px" height="30px">
 		<param name="source" value="/ClientBin/SLHttpUploader.xap?v=1.0.0.0" />
-		<param name="onerror" value="onSilverlightError" />
+		<param name="onerror" value="uploader_onSilverlightError" />
 		<param name="background" value="white" />
-		<param name="onload" value="uploaderOnLoad" />
+		<param name="onload" value="uploader_initSilverlight" />
 		<param name="minRuntimeVersion" value="3.0.40818.0" />
 		<param name="autoUpgrade" value="true" />
 		<a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=3.0.40818.0" style="text-decoration: none">

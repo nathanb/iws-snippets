@@ -64,6 +64,8 @@ echo
 echo "building mono packages"
 echo
 
+PACKAGES[0]="mono-2.11" #this was misnamed in the 2.11.0 package
+
 for i in "${PACKAGES[@]}"
 do
 	cd $BUILDDIR/$i

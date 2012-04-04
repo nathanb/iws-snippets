@@ -64,7 +64,7 @@ echo
 echo "building mono packages"
 echo
 
-PACKAGES[0]="mono-2.11" #this was misnamed in the 2.11.0 package
+PACKAGES[0]="mono-2.11" #this folder name mismatched the 2.11.0 package name
 
 for i in "${PACKAGES[@]}"
 do

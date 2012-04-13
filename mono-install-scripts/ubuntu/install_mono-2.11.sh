@@ -43,9 +43,15 @@ index=0
 while [ "$index" -lt "$count" ]
 do
 	#only download it if you don't already have it. 
-	if [ ! -f "${PACKAGES[$index]}.tar" ]
+	if [ ! -f "${PACKAGES[$index]}.tar" -a  ! -f "${PACKAGES[$index]}.tar.gz" ]
 	then
-		wget -O "${PACKAGES[$index]}.tar.bz2" "${URLS[@]:$index:1}"
+		wget "${URLS[@]:$index:1}"
+	fi
+
+	#extract
+	if [ -f "${PACKAGES[$index]}.tar.gz" ]
+	then
+		tar -zxvf "${PACKAGES[$index]}.tar.gz"
 	fi
 	if [ -f "${PACKAGES[$index]}.tar.bz2" ]
 	then

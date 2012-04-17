@@ -45,7 +45,7 @@ do
 	#only download it if you don't already have it. 
 	if [ ! -f "${PACKAGES[$index]}.tar" -a  ! -f "${PACKAGES[$index]}.tar.gz" ]
 	then
-		wget "${URLS[@]:$index:1}"
+		curl -O "${URLS[@]:$index:1}"
 	fi
 
 	#extract

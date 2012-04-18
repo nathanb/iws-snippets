@@ -78,7 +78,7 @@ do
 	
 	if [ "$i" = ${PACKAGES[0]} ]
 	then
-		sudo make install
+		make install
 	fi
 done
 
@@ -89,7 +89,7 @@ echo
 for i in "${PACKAGES[@]:1}"
 do
 	cd $BUILDDIR/$i
-	sudo make install
+	make install
 done
 
 cd $BUILDDIR

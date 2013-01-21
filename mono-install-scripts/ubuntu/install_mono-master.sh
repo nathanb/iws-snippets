@@ -41,6 +41,7 @@ echo Cloning projects
 for i in "${SOURCES[@]}"
 do
 git clone $i
+git submodule update --init --recursive
 done
 
 echo

@@ -40,7 +40,7 @@ cd $BUILDDIR
 echo Cloning projects
 for i in "${SOURCES[@]}"
 do
-git clone $i
+git clone --depth 1 --branch master  $i 
 git submodule update --init --recursive
 done
 
